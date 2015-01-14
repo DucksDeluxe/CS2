@@ -123,34 +123,13 @@ public class CS2ProgrammingWeek1
 	 * 		int[] list containing some numbers.
 	 * 
 	 * @return
-	 * 		return true if there are three consecutive evens
+	 * 		return true if there are three consecutive events
 	 * 			or three consecutive odds
 	 * 
 	 * 		otherwise returns false
 	 */
 	public static boolean ModThreeNumbers(int[] NumberList) 
 	{
-		// variables to store counts of even and odds
-		int nCountOdd = 0;
-		int nCountEven = 0;
-		
-		// loop through array
-		for (int i = 0; i < NumberList.length; i++)
-		{
-			// if the value is even
-			if (NumberList[i] % 2 == 0)
-			{
-				// increment even count
-				nCountEven++;
-			}
-			// if the value is odd
-			else
-			{
-				// increment odd count
-				nCountOdd;
-			}
-		}
-		//TODO NOT FINISHED!
 	}
 
 	// Return the "centered" average of an array of ints, 
