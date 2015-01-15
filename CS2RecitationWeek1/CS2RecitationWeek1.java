@@ -32,10 +32,12 @@ public class CS2RecitationWeek1
 
 	static void PrintRec(DataStruct ds) 
 	{
-		
+		// print value in current node
 		System.out.println(ds.KeyValue);
+		// if there is a next node
 		if (ds.Next != null)
 		{
+			// recall this method with the next node
 			PrintRec(ds.Next);
 		}
 	}
@@ -46,6 +48,13 @@ public class CS2RecitationWeek1
 
 	static void PrintBackRec(DataStruct ds) 
 	{
+		// print value in current node
+		System.out.println(ds.KeyValue);
+		// if there is a previous node
+		if (ds.Prev != null)
+		{
+		PrintBackRec(ds.Prev);
+		}
 	}
 
 	// Write a function that iterates through a linked list 
@@ -55,6 +64,33 @@ public class CS2RecitationWeek1
 
 	static void EditList(DataStruct ds) 
 	{
+		// iterate
+		while(true)
+		{
+			// print before value
+			System.out.println(ds.KeyValue);
+			
+			// if even
+			if(ds.KeyValue % 2 == 0)
+				// add 5
+				ds.KeyValue += 5;
+			// if odd
+			else
+				// subtract 4
+				ds.KeyValue -= 4;
+			
+			// print after value
+			System.out.println(ds.KeyValue);
+			
+			// if the next node exists
+			if (ds.Next != null)
+				// move to next node
+				ds = ds.Next;
+			// if there are no more nodes
+			else
+				// break out
+				break;
+		}
 	}
 	
 	// Write a recursive function that takes in two linked 
@@ -68,8 +104,31 @@ public class CS2RecitationWeek1
 	//   other isn’t.) Return 1 if the two lists passed in are 
 	//   equal, and 0 otherwise.
 
-	//static int EqualLists(DataStruct list1, DataStruct list2) 
+	static int EqualLists(DataStruct list1, DataStruct list2) 
 	{
+		int nMatch = 0;
+		
+		// if the values match
+		if (list1.KeyValue == list2.KeyValue)
+		{
+			// if there is a next node in both
+			if (list1.Next != null && list2.Next != null)
+			{
+				// call with next nodes
+				EqualLists(list1.Next, list2.Next);
+				// this one matched, so it passes a 1 up
+				return 1;
+			}
+			// if both are at last node
+			else if (list1.Next == null && list2.Next == nul) 
+				return 1;
+			
+			// if only one has a next node
+			else return 0;
+		}
+		// the values don't match			
+		else return 0;
+		
 	}
 
 	// Write a function that takes in a pointer to the front 
@@ -78,8 +137,20 @@ public class CS2RecitationWeek1
 	//   to largest, with repeats allowed), and 0 otherwise. 
 	//   The prototype is given below:
 
-	//static int InOrder(DataStruct list) 
+	static int InOrder(DataStruct list) 
 	{
+		while (list.Next != null)
+		{
+			if (list.KeyValue <= list.Next.KeyValue)
+			{
+				list = list.Next;
+				continue;
+			}
+			else
+				return 0;
+		}		
+		
+		
 	}
 	
 	///////////////////////////////////////////
