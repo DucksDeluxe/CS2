@@ -1,9 +1,8 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=origin/Week-1-progress
 PROBLEMS_FILTERS_MIGRATE=true
 eclipse.preferences.version=1
-<<<<<<< HEAD
-platformState=1421267265774
-=======
-platformState=1421187382866
->>>>>>> origin/Week-1-progress
+platformState=1421187382918
 quickStart=false
 tipsAndTricks=true

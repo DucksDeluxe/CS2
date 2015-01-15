@@ -1,5 +1,4 @@
-import java.util.Scanner;
-import java.math.*;
+
 
 ///////////////////////////////////////////
 //
@@ -7,6 +6,8 @@ import java.math.*;
 //   Created 12-10-2014 by Rick Leinecker
 //
 ///////////////////////////////////////////
+
+
 
 public class CS2ProgrammingWeek1 
 {
@@ -310,31 +311,112 @@ public class CS2ProgrammingWeek1
 	
 	public static void main(String[] args)
 	{
-		assert CountEvenNumbersInArray({2, 1, 2, 3, 4}) == 3;
+		boolean bResult = false;
+		int nResult = 0;
+		assert 2 == 15;
+		//////////////////////////////////////////////////
+		// CountEvenNumbersInArray({2, 1, 2, 3, 4}) → 3
+		int[] nArray1 = {2,1,2,3,4};
+		nResult = CountEvenNumbersInArray(nArray1);
+		assert nResult == 3;
+		
 		// CountEvenNumbersInArray({2, 2, 0}) → 3
+		int[] nArray2 = {2,2,0};
+		nResult = CountEvenNumbersInArray(nArray2);
+		assert nResult == 3;
+		
 		// CountEvenNumbersInArray({1, 3, 5}) → 0
+		int[] nArray3 = {1,3,5};
+		nResult = CountEvenNumbersInArray(nArray3);
+		assert nResult == 0;
+		////////////////////////////////////////////////////
 		
+		////////////////////////////////////////////////////
 		// LookForLucky13({0, 2, 4}) → true
+		int[] nArray4 = {0,2,4};
+		bResult = LookForLucky13(nArray4);
+		assert bResult == true;
+		
 		// LookForLucky13({1, 2, 3}) → false
+		int[] nArray5 = {1,2,3};
+		bResult = LookForLucky13(nArray5);
+		assert bResult == false;
+		
 		// LookForLucky13({1, 2, 4}) → false
+		int[] nArray6 = {1,2,4};
+		bResult = LookForLucky13(nArray6);
+		assert bResult == false;
+		////////////////////////////////////////////////////
 		
+		////////////////////////////////////////////////////
 		// MatchUpLists({1, 2, 3}, {2, 3, 10}) → 2
+		int[] nArray7 = {1,2,3};
+		int[] nArray8 = {2,3,10};
+		nResult = MatchUpLists(nArray7, nArray8);
+		assert nResult == 2;
+		
 		// MatchUpLists({1, 2, 3}, {2, 3, 5}) → 3
+		int[] nArray9 = {1,2,3};
+		int[] nArray10 = {2,3,5};
+		nResult = MatchUpLists(nArray9, nArray10);
+		assert nResult == 3;
+
 		// MatchUpLists({1, 2, 3}, {2, 3, 3}) → 2
-	
+		int[] nArray11 = {1,2,3};
+		int[] nArray12 = {2,3,3};
+		nResult = MatchUpLists(nArray11, nArray12);
+		assert nResult == 2;
+		////////////////////////////////////////////////////
+		
+		////////////////////////////////////////////////////
 		// ModThreeNumbers({2, 1, 3, 5}) → true
+		int[] nArray13 = {2,1,3,5};
+		bResult = ModThreeNumbers(nArray13);
+		assert bResult == true;
+		
 		// ModThreeNumbers({2, 1, 2, 5}) → false
+		int[] nArray14 = {2,1,2,5};
+		bResult = ModThreeNumbers(nArray14);
+		assert bResult == false;
+
 		// ModThreeNumbers({2, 4, 2, 5}) → true
+		int[] nArray15 = {2,4,2,5};
+		bResult = ModThreeNumbers(nArray15);
+		assert bResult == true;
+		///////////////////////////////////////////////////
 		
+		///////////////////////////////////////////////////
 		// FindCenteredAverage({1, 2, 3, 4, 100}) → 3
+		int[] nArray16 = {1,2,3,4,100};
+		nResult = FindCenteredAverage(nArray16);
+		assert nResult == 3;
+		
 		// FindCenteredAverage({1, 1, 5, 5, 10, 8, 7}) → 5
+		int[] nArray17 = {1,1,5,5,100};
+		nResult = FindCenteredAverage(nArray17);
+		assert nResult == 5;
+		
 		// FindCenteredAverage({-10, -4, -2, -4, -2, 0}) → -3	
+		int[] nArray18 = {-10,-4,-2,-4,-2,0};
+		nResult = FindCenteredAverage(nArray18);
+		assert nResult == -3;
+		///////////////////////////////////////////////////
 		
+		///////////////////////////////////////////////////
 		// LookForTwoTwo({4, 2, 2, 3}) → true
+		int[] nArray19 = {4,2,2,3};
+		bResult = ModThreeNumbers(nArray19);
+		assert bResult == true;
+		
 		// LookForTwoTwo({2, 2, 4}) → true
+		int[] nArray20 = {2,2,4};
+		bResult = ModThreeNumbers(nArray20);
+		assert bResult == true;
+		
 		// LookForTwoTwo({2, 2, 4, 2}) → false
-		
-		
+		int[] nArray21 = {2,2,4,2};
+		bResult = ModThreeNumbers(nArray21);
+		assert bResult == false;		
+		///////////////////////////////////////////////////
 	}
-	
 }

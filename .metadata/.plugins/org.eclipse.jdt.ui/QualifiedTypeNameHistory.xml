@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="junit.framework.TestCase"/>
+<fullyQualifiedTypeName name="junit.framework.Test"/>
+<fullyQualifiedTypeName name="org.w3c.dom.css.CSS2Properties"/>
+<fullyQualifiedTypeName name="CS2ProgrammingWeek1"/>
+<fullyQualifiedTypeName name="junit.framework.Assert"/>
+</qualifiedTypeNameHistroy>
