@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.math.*;
 
 ///////////////////////////////////////////
 //
@@ -45,25 +44,6 @@ public class CS2ProgrammingWeek1
 	 */
 	static int CountEvenNumbersInArray(int[] NumberList) 
 	{
-		
-		int nCount = 0;	// var to store count
-		int nModResult = 0;	// var to store mod result
-		
-		// loop through the entire array
-		for (int i = 0; i < NumberList.length; i++)
-		{
-			// get the modulus of the value at index i
-			nModResult = NumberList[i] % 2;
-			
-			// if modulus is 0, then value i is even.
-			if (nModResult == 0)
-			{
-				// increment our number of evens
-				nCount++;
-			}
-		}
-		// return count of even numbers
-		return nCount;
 	}
 
 	// Given an array of ints, return true if the array contains no 
@@ -84,19 +64,6 @@ public class CS2ProgrammingWeek1
 	 */
 	static boolean LookForLucky13(int[] NumberList) 
 	{
-		
-		// loop through array
-		for(int i = 0; i < NumberList.length; i++)
-		{
-			// if the value of the currently indexed value is a 1 or 3
-			if (NumberList[i] == 1 || NumberList[i] == 3)
-			{
-				// 1 or 3 found - return false
-				return false;
-			}
-		}
-		// 1 or 3 not found - return true
-		return true;
 	}	
 
 	// Given arrays NumberList1 and NumberList2 of the same length, 
@@ -111,21 +78,6 @@ public class CS2ProgrammingWeek1
 	
 	static int MatchUpLists(int[] NumberList1, int[] NumberList2) 
 	{
-		// variable to store count
-		int nCount = 0;
-		
-		// loop through arrays
-		for (int i = 0; i < NumberList1.length; i++)
-		{
-			// if the difference is less than or equal to 2
-			if (Math.abs(NumberList1[i] - NumberList2[i]) <= 2)
-			{
-				// increment count
-				nCount++;
-			}
-		}
-		// return final count
-		return nCount;
 	}	
 
 	// Given an array of ints, return true if the array 
@@ -142,34 +94,13 @@ public class CS2ProgrammingWeek1
 	 * 		int[] list containing some numbers.
 	 * 
 	 * @return
-	 * 		return true if there are three consecutive evens
+	 * 		return true if there are three consecutive events
 	 * 			or three consecutive odds
 	 * 
 	 * 		otherwise returns false
 	 */
 	public static boolean ModThreeNumbers(int[] NumberList) 
 	{
-		// variables to store counts of even and odds
-		int nCountOdd = 0;
-		int nCountEven = 0;
-		
-		// loop through array
-		for (int i = 0; i < NumberList.length; i++)
-		{
-			// if the value is even
-			if (NumberList[i] % 2 == 0)
-			{
-				// increment even count
-				nCountEven++;
-			}
-			// if the value is odd
-			else
-			{
-				// increment odd count
-				nCountOdd;
-			}
-		}
-		//TODO NOT FINISHED!
 	}
 
 	// Return the "centered" average of an array of ints, 
