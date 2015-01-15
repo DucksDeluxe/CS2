@@ -149,27 +149,57 @@ public class CS2ProgrammingWeek1
 	 */
 	public static boolean ModThreeNumbers(int[] NumberList) 
 	{
-		// variables to store counts of even and odds
-		int nCountOdd = 0;
-		int nCountEven = 0;
+		// variable to store count of consecutive odds or evens
+		int nCount = 0;
+		// flags for previous and current numbers shows false if even, true if odd
+		boolean bPrevFlag = false;
+		boolean bCurrFlag = false;
 		
 		// loop through array
 		for (int i = 0; i < NumberList.length; i++)
-		{
-			// if the value is even
+		{			
+			// if current number is even
 			if (NumberList[i] % 2 == 0)
 			{
-				// increment even count
-				nCountEven++;
+				// set matching flag
+				bCurrFlag = false;
 			}
-			// if the value is odd
+			// otherwise, current number is odd
 			else
 			{
-				// increment odd count
-				nCountOdd;
+				// set matching flag
+				bCurrFlag = true;
 			}
+			
+			// if the current and previous are even
+			if (bCurrFlag == false && bPrevFlag == false)
+			{
+				// increment count
+				nCount++;
+			}
+			// if the current and previous are odd
+			else if (bCurrFlag == true && bPrevFlag == true)
+			{
+				// increment odd count
+				nCount++;
+			}
+			// otherwise, the flags don't match
+			else
+			{
+				// this is the first consecutive of its type
+				nCount = 1;
+				// update the previous value's flag
+				bPrevFlag = bCurrFlag;
+			}
+			
+			// are we there yet?
+			if (nCount == 3)
+				// we found 3 in a row!
+				return true;
 		}
-		//TODO NOT FINISHED!
+		
+		// we didn't find 3 in a row
+		return false;
 	}
 
 	// Return the "centered" average of an array of ints, 
@@ -197,6 +227,36 @@ public class CS2ProgrammingWeek1
 	 */
 	static int FindCenteredAverage(int[] NumberList) 
 	{
+		int nLowIndex = NumberList[0];
+		int nHighIndex = NumberList[0];
+		int nSum = 0;
+		
+		// loop through NumberList array to search for outer values
+		for (int i = 0; i < NumberList.length; i++)
+		{
+			// is the current number lower than our stored number?
+			if(nLowIndex > NumberList[i])
+				// update with the index of new lowest number
+				nLowIndex = i;
+			// is the current number higher than our stored number?
+			if(nHighIndex < NumberList[i])
+				// update with the index of new highest number
+				nHighIndex = i;
+		}
+		
+		// loop through NumberList to copy and remove outer values
+		for (int i = 0; i < NumberList.length; i++)
+		{
+			// if index is at the outer values
+			if (i == nLowIndex || i == nHighIndex)
+				// skip them
+				i++;
+			// otherwise
+			else
+				// include it in the sum
+				nSum += NumberList[i];
+		}
+		return nSum / (NumberList.length - 2);	
 	}
 	
 	// Given an array of ints, return true if every 2 that 
@@ -217,6 +277,29 @@ public class CS2ProgrammingWeek1
 	 */
 	static boolean LookForTwoTwo(int[] NumberList) 
 	{
+		// loop through array
+		for (int i = 0; i < NumberList.length; i++)
+		{
+			// is the current number a 2?
+			if (NumberList[i] == 2)
+			{
+				// is there another number?
+				if (i != NumberList.length - 1)
+				{
+					// is that number not a 2?
+					if (i + 1 != 2)
+					{
+						// it's not a 2.  We have our result
+						return false;
+					}
+				}
+				// there's not another number
+				else
+					return false;
+			}
+		}
+		// return true if all 2s come in pairs or if no 2s are found
+		return true;
 	}
 	
 	///////////////////////////////////////////
@@ -227,6 +310,31 @@ public class CS2ProgrammingWeek1
 	
 	public static void main(String[] args)
 	{
+		assert CountEvenNumbersInArray({2, 1, 2, 3, 4}) == 3;
+		// CountEvenNumbersInArray({2, 2, 0}) → 3
+		// CountEvenNumbersInArray({1, 3, 5}) → 0
+		
+		// LookForLucky13({0, 2, 4}) → true
+		// LookForLucky13({1, 2, 3}) → false
+		// LookForLucky13({1, 2, 4}) → false
+		
+		// MatchUpLists({1, 2, 3}, {2, 3, 10}) → 2
+		// MatchUpLists({1, 2, 3}, {2, 3, 5}) → 3
+		// MatchUpLists({1, 2, 3}, {2, 3, 3}) → 2
+	
+		// ModThreeNumbers({2, 1, 3, 5}) → true
+		// ModThreeNumbers({2, 1, 2, 5}) → false
+		// ModThreeNumbers({2, 4, 2, 5}) → true
+		
+		// FindCenteredAverage({1, 2, 3, 4, 100}) → 3
+		// FindCenteredAverage({1, 1, 5, 5, 10, 8, 7}) → 5
+		// FindCenteredAverage({-10, -4, -2, -4, -2, 0}) → -3	
+		
+		// LookForTwoTwo({4, 2, 2, 3}) → true
+		// LookForTwoTwo({2, 2, 4}) → true
+		// LookForTwoTwo({2, 2, 4, 2}) → false
+		
+		
 	}
 	
 }
