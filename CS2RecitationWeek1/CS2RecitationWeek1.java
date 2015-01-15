@@ -120,7 +120,7 @@ public class CS2RecitationWeek1
 				return 1;
 			}
 			// if both are at last node
-			else if (list1.Next == null && list2.Next == nul) 
+			else if (list1.Next == null && list2.Next == null) 
 				return 1;
 			
 			// if only one has a next node
@@ -149,7 +149,7 @@ public class CS2RecitationWeek1
 			else
 				return 0;
 		}		
-		
+		return 1;
 		
 	}
 	
@@ -183,11 +183,16 @@ public class CS2RecitationWeek1
 
 		EditList( ds );
 
-		//int nEqual = EqualLists( ds, ds );
+		int nEqual = EqualLists( ds, ds2 );
+		System.out.println(nEqual);
 
-		//int nInOrder = InOrder(ds);
+		int nInOrder = InOrder(ds);
+		System.out.println(nInOrder);
 
-		//nInOrder = InOrder(ds2);
+		nInOrder = InOrder(ds2);
+		System.out.println(nInOrder);
+
+
 
 	}
 

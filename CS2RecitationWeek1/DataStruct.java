@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class DataStruct 
 {
-	static Random rnd = new Random(5);
+	static Random rnd = new Random();
 	
 	DataStruct Next;
 	DataStruct Prev;
