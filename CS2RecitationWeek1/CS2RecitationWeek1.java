@@ -139,18 +139,24 @@ public class CS2RecitationWeek1
 
 	static int InOrder(DataStruct list) 
 	{
+		// iterate through each node
 		while (list.Next != null)
 		{
+			// if the current value is less than or equal to the next value
 			if (list.KeyValue <= list.Next.KeyValue)
 			{
+				// point to the next node
 				list = list.Next;
+				// do it again
 				continue;
 			}
+			// if the current value is greater than
 			else
+				// then it's not in order
 				return 0;
 		}		
+		// if you made it here, the list is in order
 		return 1;
-		
 	}
 	
 	///////////////////////////////////////////
