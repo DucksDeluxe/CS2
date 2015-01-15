@@ -5,4 +5,8 @@
 <fullyQualifiedTypeName name="org.w3c.dom.css.CSS2Properties"/>
 <fullyQualifiedTypeName name="CS2ProgrammingWeek1"/>
 <fullyQualifiedTypeName name="junit.framework.Assert"/>
+<fullyQualifiedTypeName name="java.io.Console"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="java.lang.AssertionError"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
 </qualifiedTypeNameHistroy>

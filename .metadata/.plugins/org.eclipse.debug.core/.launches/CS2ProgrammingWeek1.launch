@@ -8,4 +8,5 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="CS2ProgrammingWeek1"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="CS2ProgrammingWeek1"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea"/>
 </launchConfiguration>

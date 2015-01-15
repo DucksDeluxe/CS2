@@ -32,6 +32,12 @@ public class CS2RecitationWeek1
 
 	static void PrintRec(DataStruct ds) 
 	{
+		
+		System.out.println(ds.KeyValue);
+		if (ds.Next != null)
+		{
+			PrintRec(ds.Next);
+		}
 	}
 
 	// Write a function that recursively prints out all 
@@ -62,7 +68,7 @@ public class CS2RecitationWeek1
 	//   other isn’t.) Return 1 if the two lists passed in are 
 	//   equal, and 0 otherwise.
 
-	static int EqualLists(DataStruct list1, DataStruct list2) 
+	//static int EqualLists(DataStruct list1, DataStruct list2) 
 	{
 	}
 
@@ -72,7 +78,7 @@ public class CS2RecitationWeek1
 	//   to largest, with repeats allowed), and 0 otherwise. 
 	//   The prototype is given below:
 
-	static int InOrder(DataStruct list) 
+	//static int InOrder(DataStruct list) 
 	{
 	}
 	
@@ -106,11 +112,11 @@ public class CS2RecitationWeek1
 
 		EditList( ds );
 
-		int nEqual = EqualLists( ds, ds );
+		//int nEqual = EqualLists( ds, ds );
 
-		int nInOrder = InOrder(ds);
+		//int nInOrder = InOrder(ds);
 
-		nInOrder = InOrder(ds2);
+		//nInOrder = InOrder(ds2);
 
 	}
 

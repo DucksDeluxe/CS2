@@ -1,3 +1,5 @@
+import java.io.Console;
+import java.io.IOException;
 
 
 ///////////////////////////////////////////
@@ -121,6 +123,12 @@ public class CS2ProgrammingWeek1
 			// if the difference is less than or equal to 2
 			if (Math.abs(NumberList1[i] - NumberList2[i]) <= 2)
 			{
+				// if the numbers are equal
+				if (NumberList1[i] == NumberList2[i])
+				{
+					// don't count
+					continue;
+				}
 				// increment count
 				nCount++;
 			}
@@ -228,19 +236,20 @@ public class CS2ProgrammingWeek1
 	 */
 	static int FindCenteredAverage(int[] NumberList) 
 	{
-		int nLowIndex = NumberList[0];
-		int nHighIndex = NumberList[0];
+		int nLowIndex = 0;
+		int nHighIndex = 0;
 		int nSum = 0;
+		int nResult = 0;
 		
 		// loop through NumberList array to search for outer values
 		for (int i = 0; i < NumberList.length; i++)
 		{
 			// is the current number lower than our stored number?
-			if(nLowIndex > NumberList[i])
+			if(NumberList[nLowIndex] > NumberList[i])
 				// update with the index of new lowest number
 				nLowIndex = i;
 			// is the current number higher than our stored number?
-			if(nHighIndex < NumberList[i])
+			if(NumberList[nHighIndex] < NumberList[i])
 				// update with the index of new highest number
 				nHighIndex = i;
 		}
@@ -248,16 +257,18 @@ public class CS2ProgrammingWeek1
 		// loop through NumberList to copy and remove outer values
 		for (int i = 0; i < NumberList.length; i++)
 		{
-			// if index is at the outer values
+			// if index is not at an outer value
 			if (i == nLowIndex || i == nHighIndex)
-				// skip them
-				i++;
+				// skip it
+				continue;
 			// otherwise
 			else
 				// include it in the sum
 				nSum += NumberList[i];
 		}
-		return nSum / (NumberList.length - 2);	
+		// compute the average
+		nResult = nSum / (NumberList.length - 2);	
+		return nResult;
 	}
 	
 	// Given an array of ints, return true if every 2 that 
@@ -284,19 +295,27 @@ public class CS2ProgrammingWeek1
 			// is the current number a 2?
 			if (NumberList[i] == 2)
 			{
-				// is there another number?
-				if (i != NumberList.length - 1)
+				// is the following number inbounds?
+				if(i + 1 < NumberList.length)
 				{
-					// is that number not a 2?
-					if (i + 1 != 2)
+					// is that number a 2?
+					if (NumberList[i+1] == 2)
 					{
-						// it's not a 2.  We have our result
-						return false;
+						// advance
+						i++;
+						continue;
 					}
+					// otherwise
+					else
+						// there's a lone 2
+						return false;
 				}
-				// there's not another number
+				// Then that makes a lone 2
 				else
+				{
+					// return as such
 					return false;
+				}
 			}
 		}
 		// return true if all 2s come in pairs or if no 2s are found
@@ -309,11 +328,11 @@ public class CS2ProgrammingWeek1
 	//
 	///////////////////////////////////////////
 	
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException
 	{
 		boolean bResult = false;
-		int nResult = 0;
-		assert 2 == 15;
+		int nResult = 0;		
+		
 		//////////////////////////////////////////////////
 		// CountEvenNumbersInArray({2, 1, 2, 3, 4}) → 3
 		int[] nArray1 = {2,1,2,3,4};
@@ -328,7 +347,7 @@ public class CS2ProgrammingWeek1
 		// CountEvenNumbersInArray({1, 3, 5}) → 0
 		int[] nArray3 = {1,3,5};
 		nResult = CountEvenNumbersInArray(nArray3);
-		assert nResult == 0;
+		assert (nResult == 0);
 		////////////////////////////////////////////////////
 		
 		////////////////////////////////////////////////////
@@ -392,7 +411,7 @@ public class CS2ProgrammingWeek1
 		assert nResult == 3;
 		
 		// FindCenteredAverage({1, 1, 5, 5, 10, 8, 7}) → 5
-		int[] nArray17 = {1,1,5,5,100};
+		int[] nArray17 = {1,1,5,5,10,8,7};
 		nResult = FindCenteredAverage(nArray17);
 		assert nResult == 5;
 		
@@ -401,21 +420,21 @@ public class CS2ProgrammingWeek1
 		nResult = FindCenteredAverage(nArray18);
 		assert nResult == -3;
 		///////////////////////////////////////////////////
-		
+
 		///////////////////////////////////////////////////
 		// LookForTwoTwo({4, 2, 2, 3}) → true
 		int[] nArray19 = {4,2,2,3};
-		bResult = ModThreeNumbers(nArray19);
+		bResult = LookForTwoTwo(nArray19);
 		assert bResult == true;
 		
 		// LookForTwoTwo({2, 2, 4}) → true
 		int[] nArray20 = {2,2,4};
-		bResult = ModThreeNumbers(nArray20);
+		bResult = LookForTwoTwo(nArray20);
 		assert bResult == true;
 		
 		// LookForTwoTwo({2, 2, 4, 2}) → false
 		int[] nArray21 = {2,2,4,2};
-		bResult = ModThreeNumbers(nArray21);
+		bResult = LookForTwoTwo(nArray21);
 		assert bResult == false;		
 		///////////////////////////////////////////////////
 	}
