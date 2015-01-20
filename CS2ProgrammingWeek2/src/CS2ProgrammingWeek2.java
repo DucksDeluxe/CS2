@@ -81,29 +81,28 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] multiplesOfTen(int[] NumberList) 
 	{
-		// loop through array 
+		int nMult = 0;
+		
+		// loop through array
 		for (int i=0; i<NumberList.length; i++)
 		{
-			// is current value a multiple of 10?
-			if (NumberList[i] %10 == 0)
+			// if val i is mult of 10
+			if (NumberList[i] % 10 == 0)
 			{
-				// change following non-multiples of 10 to current value at i
-				for(int j=i+1; j<NumberList.length; j++)
-				{			
-					// if value j is a non-multiple of 10
-					if(NumberList[j] % 10 != 0)
-					{
-						// make it match the most recent multiple of 10
-						NumberList[j] = NumberList[i];
-					}
-					// the value is a multiple of 10
-					else
-					{
-						i=j-1;
-						
-					}
-				}
+				// store the multiple
+				nMult = NumberList[i];
 			}
+			
+			// if val i is not a mult of 10 && we have a mult to change to
+			else if (NumberList[i] % 10 != 0 && nMult != 0)
+			{
+				// perform the change
+				NumberList[i] = nMult;
+			}
+			
+			// if val i is not a mult of 10 && we haven't seen a mult yet
+			else
+				continue;
 		}
 		return NumberList;
 	}	
@@ -132,6 +131,31 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] CheckForAloneNumbers(int[] NumberList, int changingNumber) 
 	{
+		// loop through array (jump the first and last number)
+		for (int i=1; i<NumberList.length - 1; i++)
+		{
+			// if val i is our target val
+			if (NumberList[i] == changingNumber)
+			{
+				// if val i is "alone"
+				if (NumberList[i-1] != changingNumber || NumberList[i+1] != changingNumber)
+				{
+					// is the next value higher?
+					if (NumberList[i-1] < NumberList[i+1])
+					{
+						// change to higher value
+						NumberList[i] = NumberList[i+1];
+					}
+					// the previous value is higher or equal to the following
+					else
+					{
+						// change to higher value
+						NumberList[i] = NumberList[i-1];
+					}
+				}
+			}
+		}
+		return NumberList;
 	}	
 
 	//	Problem #4
