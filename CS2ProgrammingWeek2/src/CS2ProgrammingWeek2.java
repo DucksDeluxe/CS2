@@ -179,6 +179,31 @@ public class CS2ProgrammingWeek2
 	 */
 	public static int[] ReplaceZerosWithLargestOdd(int[] NumberList) 
 	{
+		int nMaxIndex;
+		
+		// loop through array
+		for (int i=0; i<NumberList.length; i++)
+		{
+			// if val i is a 0 and not the last value of the list
+			if (NumberList[i] == 0 && i+1 != NumberList.length)
+			{
+				// assume 0 is the max
+				nMaxIndex = i;
+				// loop through the rest of the array
+				for (int j=i; j<NumberList[i]; j++)
+				{
+					// is val j greater than my current max?
+					if (NumberList[j] > NumberList[nMaxIndex])
+					{
+						// update max index
+						nMaxIndex = j;
+					}
+				}
+				// update val i
+				NumberList[i] = NumberList[nMaxIndex];
+			}
+		}
+		return NumberList;
 	}
 	
 	//	Problem #5
@@ -203,6 +228,18 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] CreateIncreasingArray(int start, int end) 
 	{
+		int[] Array;
+		int val = start;
+		
+		// loop through array
+		for (int i=0; i<end-start; i++)
+		{
+			// update array with next val
+			Array[i] = val;
+			// increment val
+			val++;
+		}
+		return Array;
 	}
 	
 	//	Problem #6
