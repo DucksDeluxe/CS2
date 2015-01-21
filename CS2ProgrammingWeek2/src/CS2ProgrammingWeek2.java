@@ -324,10 +324,11 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] MoveZerosToFront(int[] NumberList) 
 	{
-		boolean bIsDirty = false;
+		boolean bIsDirty;
 
 		do
 		{
+			bIsDirty = false;
 			// loop through array
 			for (int i=0; i<NumberList.length; i++)
 			{
@@ -374,11 +375,12 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] EvenFrontOddBack(int[] NumberList) 
 	{
-		boolean bIsDirty = false;
+		boolean bIsDirty;
 		int nSwap;
 
 		do
 		{
+			bIsDirty = false;
 			// loop through array
 			for (int i=1; i<NumberList.length; i++)
 			{
