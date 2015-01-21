@@ -307,11 +307,30 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] MoveZerosToFront(int[] NumberList) 
 	{
-		// loop through array
-		for (int i=0; i<NumberList.length; i++)
+		boolean bIsDirty = false;
+
+		do
 		{
-			
-		}
+			// loop through array
+			for (int i=0; i<NumberList.length; i++)
+			{
+				// if val i is 0 and not in the first position
+				if (NumberList[i] == 0 && i != 0)
+				{
+					// if the previous position is not a zero
+					if (NumberList[i-1] != 0)
+					{
+						// swap val i with val i-1
+						NumberList[i] = NumberList[i-1];
+						// move the 0 to val i-1
+						NumberList[i-1] = 0;
+						// note that we need to run do-loop again
+						bIsDirty = true;
+					}
+				}
+			}
+		}while(bIsDirty);
+		
 		return NumberList;
 	}
 	
@@ -338,6 +357,29 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] EvenFrontOddBack(int[] NumberList) 
 	{
+		boolean bIsDirty = false;
+		int nSwap;
+
+		do
+		{
+			// loop through array
+			for (int i=1; i<NumberList.length; i++)
+			{
+				// if previous is odd and current is even
+				if (NumberList[i-1] % 2 != 0 && NumberList[i] % 2 == 0)
+				{
+					// copy val i to swap
+					nSwap = NumberList[i];
+					// move previous to current
+					NumberList[i] = NumberList[i-1];
+					// move swap to previous
+					NumberList[i-1] = nSwap;
+					// note that we need to run do-loop again
+					bIsDirty = true;
+				}
+			}
+		}while(bIsDirty);
+		
 		return NumberList;
 	}
 	
@@ -377,7 +419,67 @@ public class CS2ProgrammingWeek2
 	
 	public static void main(String[] args)
 	{
-
+		//Problem 1
+		System.out.println("Problem 1:");
+		int[] l1 = {1, 4, 5, 6, 2};
+		int[] l2 = {1, 2, 3};
+		int[] l3 = {1, 2, 4};
+		System.out.println(FindThreeIncreasingNumbers(l1));
+		System.out.println(FindThreeIncreasingNumbers(l2));
+		System.out.println(FindThreeIncreasingNumbers(l3));
+		//Problem 2
+		System.out.println("\nProblem 2:");
+		int[] l4 = {2, 10, 3, 4, 20, 5};
+		int[] l5 = {10, 1, 20, 2};
+		int[] l6 = {10, 1, 9, 20};
+		System.out.println(Arrays.toString(multiplesOfTen(l4)));
+		System.out.println(Arrays.toString(multiplesOfTen(l5)));
+		System.out.println(Arrays.toString(multiplesOfTen(l6)));
+		//Problem 3
+		System.out.println("\nProblem 3:");
+		int[] l7 = {1, 2, 3};
+		int[] l8 = {1, 2, 3, 2, 5, 2};
+		int[] l9 = {3, 4};
+		System.out.println(Arrays.toString(CheckForAloneNumbers(l7,2)));
+		System.out.println(Arrays.toString(CheckForAloneNumbers(l8,2)));
+		System.out.println(Arrays.toString(CheckForAloneNumbers(l9,3)));
+		//Problem 4
+		System.out.println("\nProblem 4:");
+		int[] l10 = {0, 5, 0, 3};
+		int[] l11 = {0, 4, 0, 3};
+		int[] l12 = {0, 1, 0};
+		System.out.println(Arrays.toString(ReplaceZerosWithLargestOdd(l10)));
+		System.out.println(Arrays.toString(ReplaceZerosWithLargestOdd(l11)));
+		System.out.println(Arrays.toString(ReplaceZerosWithLargestOdd(l12)));
+		//Problem 5
+		System.out.println("\nProblem 5:");
+		System.out.println(Arrays.toString(CreateIncreasingArray(5, 10)));
+		System.out.println(Arrays.toString(CreateIncreasingArray(11, 18)));
+		System.out.println(Arrays.toString(CreateIncreasingArray(1, 3)));
+		//Problem 6
+		System.out.println("\nProblem 6:");
+		int[] l13 = {1, 2, 4, 1};
+		int[] l14 = {3, 1, 4};
+		int[] l15 = {1, 4, 4};
+		System.out.println(Arrays.toString(CopyNumbersBeforeFour(l13)));
+		System.out.println(Arrays.toString(CopyNumbersBeforeFour(l14)));
+		System.out.println(Arrays.toString(CopyNumbersBeforeFour(l15)));
+		//Problem 7
+		System.out.println("\nProblem 7:");
+		int[] l16 = {1, 0, 0, 1};
+		int[] l17 = {0, 1, 1, 0, 1};
+		int[] l18 = {1, 0};
+		System.out.println(Arrays.toString(MoveZerosToFront(l16)));
+		System.out.println(Arrays.toString(MoveZerosToFront(l17)));
+		System.out.println(Arrays.toString(MoveZerosToFront(l18)));
+		//Problem 8
+		System.out.println("\nProblem 8:");
+		int[] l19 = {1, 0, 1, 0, 0, 1, 1};
+		int[] l20 = {3, 3, 2};
+		int[] l21 = {2, 2, 2};
+		System.out.println(Arrays.toString(EvenFrontOddBack(l19)));
+		System.out.println(Arrays.toString(EvenFrontOddBack(l20)));
+		System.out.println(Arrays.toString(EvenFrontOddBack(l21)));
 	}
 	
 }
