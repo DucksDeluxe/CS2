@@ -228,7 +228,7 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] CreateIncreasingArray(int start, int end) 
 	{
-		int[] Array;
+		int[] Array = {};
 		int val = start;
 		
 		// loop through array
@@ -267,10 +267,10 @@ public class CS2ProgrammingWeek2
 		int[] ReturnList;
 		
 		// loop through array
-		for (int i=0; i<NumberList.Length; i++)
+		for (int i=0; i<NumberList.length; i++)
 		{
 			// if val is 4, get out
-			if (NumberList.Length == 4)
+			if (NumberList.length == 4)
 			{
 				break;
 			}
