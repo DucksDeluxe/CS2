@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -228,18 +229,27 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] CreateIncreasingArray(int start, int end) 
 	{
-		int[] Array = {};
+		int nLength = end-start;
+		ArrayList<Integer> nArrayList = new ArrayList<Integer>();
 		int val = start;
 		
 		// loop through array
-		for (int i=0; i<end-start; i++)
+		for (int i=0; i<nLength; i++)
 		{
-			// update array with next val
-			Array[i] = val;
+			// update array list with next val
+			nArrayList.add(val);
 			// increment val
 			val++;
 		}
-		return Array;
+		
+		// create an array to hold values
+		int[] nArray = new int[nArrayList.size()];
+		// loop through arraylist
+		for (int i=0; i < nArrayList.size(); i++)
+			// copy over to array
+			nArray[i] = nArrayList.get(i).intValue();
+				
+		return nArray;
 	}
 	
 	//	Problem #6
@@ -264,13 +274,12 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] CopyNumbersBeforeFour(int[] NumberList) 
 	{
-		int[] ReturnList;
-		
+		ArrayList<Integer> nArrayList = new ArrayList<Integer>();
 		// loop through array
 		for (int i=0; i<NumberList.length; i++)
 		{
 			// if val is 4, get out
-			if (NumberList.length == 4)
+			if (NumberList[i] == 4)
 			{
 				break;
 			}
@@ -278,10 +287,18 @@ public class CS2ProgrammingWeek2
 			else
 			{
 				// update ReturnList
-				ReturnList[i] = NumberList[i];
+				nArrayList.add(NumberList[i]);
 			}
 		}
-		return ReturnList;
+		
+		// create an array to hold values
+		int[] nArray = new int[nArrayList.size()];
+		// loop through arraylist
+		for (int i=0; i < nArrayList.size(); i++)
+			// copy over to array
+			nArray[i] = nArrayList.get(i).intValue();
+		
+		return nArray;
 	}
 	
 	//	Problem #7
