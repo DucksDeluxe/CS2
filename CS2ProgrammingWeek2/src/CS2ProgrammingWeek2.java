@@ -264,6 +264,24 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] CopyNumbersBeforeFour(int[] NumberList) 
 	{
+		int[] ReturnList;
+		
+		// loop through array
+		for (int i=0; i<NumberList.Length; i++)
+		{
+			// if val is 4, get out
+			if (NumberList.Length == 4)
+			{
+				break;
+			}
+			// if val is not 4
+			else
+			{
+				// update ReturnList
+				ReturnList[i] = NumberList[i];
+			}
+		}
+		return ReturnList;
 	}
 	
 	//	Problem #7
@@ -289,6 +307,12 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] MoveZerosToFront(int[] NumberList) 
 	{
+		// loop through array
+		for (int i=0; i<NumberList.length; i++)
+		{
+			
+		}
+		return NumberList;
 	}
 	
 	//	Problem #8
@@ -314,6 +338,7 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] EvenFrontOddBack(int[] NumberList) 
 	{
+		return NumberList;
 	}
 	
 	///////////////////////////////////////////
