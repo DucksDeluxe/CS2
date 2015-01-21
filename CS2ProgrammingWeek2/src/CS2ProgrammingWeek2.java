@@ -1,6 +1,6 @@
 import java.util.Arrays;
 import java.util.Scanner;
-//test
+
 ///////////////////////////////////////////
 //
 // Test frame for CS2 programming assignments
