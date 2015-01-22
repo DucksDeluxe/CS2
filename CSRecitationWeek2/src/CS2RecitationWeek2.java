@@ -29,10 +29,99 @@ public class CS2RecitationWeek2
 	
 	static int[] DoBubbleSort( int[] DataIn )
 	{
+		try
+		{
+			boolean bDirty;
+			int nSwap;
+			
+			// if we receive an array of length 0, there is nothing to sort
+			if (DataIn.length == 0)
+				return DataIn;
+			
+			// create an array that we will sort and pass back
+			int[] DataOut = new int[DataIn.length];
+			
+			// copy data over to our new array
+			for (int i=0; i<DataIn.length; i++)
+			{
+				// copy directly
+				DataOut[i] = DataIn[i];
+			}
+			
+			// pass over the whole array until it is completely sorted
+			do
+			{
+				// fresh start
+				bDirty = false;
+				
+				// loop through array (last element doesn't have a value to compare, so skip it)
+				for (int i=0; i<DataOut.length - 1; i++)
+				{
+					// is the next element less than the current?
+					if ( DataOut[i] > DataOut[i+1] )
+					{
+						// note that we need to run again
+						bDirty = true;
+						
+						// swap values
+						nSwap = DataOut[i];
+						DataOut[i] = DataOut[i+1];
+						DataOut[i+1] = nSwap;
+					}	
+				}
+			}while(!bDirty);
+			
+			// we are done
+			return DataOut;
+		}
+
+		// Safety net to keep things moving.
+		catch
+		{
+			return DataIn;
+		}
 	}
     
     	static int[] DoInsertSort( int[] DataIn )
 	{
+		try
+		{
+			int nSwap;
+			int j;
+			
+			// if we receive an array of length 0, there is nothing to sort
+			if (DataIn.length == 0)
+				return DataIn;
+			
+			// create an array that we will sort and pass back
+			int[] DataOut = new int[DataIn.length];
+			
+			// copy data over to our new array
+			for (int i=0; i<DataIn.length; i++)
+			{
+				// copy directly
+				DataOut[i] = DataIn[i];
+			}
+			
+			// loop through array
+			for (int i=1; i<DataOut.length; i++)
+			{
+				j = i;
+				while ( DataOut[j] < DataOut[j-1] && j > -1 )
+				{
+					nSwap = DataOut[j];
+					DataOut[j] = DataOut[j-1]
+					DataOut[j-1] = swap;
+					j--;
+				}
+			}
+			return DataOut;
+		}
+		
+		catch
+		{
+		
+		}
 	}
 
     	static int[] DoHeapSort( int[] DataIn )
