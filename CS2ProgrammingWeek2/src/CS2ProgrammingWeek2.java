@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -48,6 +47,10 @@ public class CS2ProgrammingWeek2
 	 */
 	static boolean FindThreeIncreasingNumbers(int[] NumberList) 
 	{
+		// make sure we don't get dupped
+		if ( NumberList.length < 3 )
+			return false;
+		
 		// loop through array
 		for(int i=0; i<NumberList.length; i++)
 		{
@@ -82,6 +85,10 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] multiplesOfTen(int[] NumberList) 
 	{
+		// make sure we don't get dupped
+		if ( NumberList.length == 0 )
+			return NumberList;
+		
 		int nMult = 0;
 		
 		// loop through array
@@ -132,6 +139,10 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] CheckForAloneNumbers(int[] NumberList, int changingNumber) 
 	{
+		// make sure we don't get dupped
+		if ( NumberList.length == 0 )
+			return NumberList;
+		
 		// loop through array (jump the first and last number)
 		for (int i=1; i<NumberList.length - 1; i++)
 		{
@@ -180,7 +191,11 @@ public class CS2ProgrammingWeek2
 	 */
 	public static int[] ReplaceZerosWithLargestOdd(int[] NumberList) 
 	{
-		int nMaxIndex;
+		// make sure we don't get dupped
+		if ( NumberList.length == 0 )
+			return NumberList;
+		
+		int nMaxOddRight;
 		
 		// loop through array
 		for (int i=0; i<NumberList.length; i++)
@@ -189,19 +204,19 @@ public class CS2ProgrammingWeek2
 			if (NumberList[i] == 0 && i+1 != NumberList.length)
 			{
 				// assume 0 is the max
-				nMaxIndex = i;
+				nMaxOddRight = 0;
 				// loop through the rest of the array
-				for (int j=i; j<NumberList[i]; j++)
+				for (int j=i; j<NumberList.length; j++)
 				{
-					// is val j greater than my current max?
-					if (NumberList[j] > NumberList[nMaxIndex])
+					// is val j is odd and greater than my current max?
+					if (NumberList[j] % 2 != 0 && NumberList[j] > nMaxOddRight)
 					{
-						// update max index
-						nMaxIndex = j;
+						// update max odd value
+						nMaxOddRight = NumberList[j];
 					}
 				}
-				// update val i
-				NumberList[i] = NumberList[nMaxIndex];
+				// update val i with max
+				NumberList[i] = nMaxOddRight;
 			}
 		}
 		return NumberList;
@@ -229,8 +244,15 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] CreateIncreasingArray(int start, int end) 
 	{
+		// make sure we don't get dupped
+		if ( end < start )
+		{
+			int[] emptyArray = {};
+			return emptyArray;
+		}
+		
 		int nLength = end-start;
-		ArrayList<Integer> nArrayList = new ArrayList<Integer>();
+		java.util.ArrayList<Integer> nArrayList = new java.util.ArrayList<Integer>();
 		int val = start;
 		
 		// loop through array
@@ -274,7 +296,12 @@ public class CS2ProgrammingWeek2
 	 */
 	static int[] CopyNumbersBeforeFour(int[] NumberList) 
 	{
-		ArrayList<Integer> nArrayList = new ArrayList<Integer>();
+		// make sure we don't get dupped
+		if ( NumberList.length == 0 )
+			return NumberList;
+		
+		// since we don't know how long our new array needs to be, let's use this
+		java.util.ArrayList<Integer> nArrayList = new java.util.ArrayList<Integer>();
 		// loop through array
 		for (int i=0; i<NumberList.length; i++)
 		{
@@ -326,8 +353,14 @@ public class CS2ProgrammingWeek2
 	{
 		boolean bIsDirty;
 
+		// make sure we don't get dupped
+		if ( NumberList.length == 0 )
+			return NumberList;
+		
+		// pass over array until no further action is needed
 		do
 		{
+			// fresh start
 			bIsDirty = false;
 			// loop through array
 			for (int i=0; i<NumberList.length; i++)
@@ -378,8 +411,14 @@ public class CS2ProgrammingWeek2
 		boolean bIsDirty;
 		int nSwap;
 
+		// make sure we don't get dupped
+		if ( NumberList.length == 0 )
+			return NumberList;
+		
+		// pass over array until no further action is needed
 		do
 		{
+			// fresh start
 			bIsDirty = false;
 			// loop through array
 			for (int i=1; i<NumberList.length; i++)
@@ -438,67 +477,7 @@ public class CS2ProgrammingWeek2
 	
 	public static void main(String[] args)
 	{
-		//Problem 1
-		System.out.println("Problem 1:");
-		int[] l1 = {1, 4, 5, 6, 2};
-		int[] l2 = {1, 2, 3};
-		int[] l3 = {1, 2, 4};
-		System.out.println(FindThreeIncreasingNumbers(l1));
-		System.out.println(FindThreeIncreasingNumbers(l2));
-		System.out.println(FindThreeIncreasingNumbers(l3));
-		//Problem 2
-		System.out.println("\nProblem 2:");
-		int[] l4 = {2, 10, 3, 4, 20, 5};
-		int[] l5 = {10, 1, 20, 2};
-		int[] l6 = {10, 1, 9, 20};
-		System.out.println(Arrays.toString(multiplesOfTen(l4)));
-		System.out.println(Arrays.toString(multiplesOfTen(l5)));
-		System.out.println(Arrays.toString(multiplesOfTen(l6)));
-		//Problem 3
-		System.out.println("\nProblem 3:");
-		int[] l7 = {1, 2, 3};
-		int[] l8 = {1, 2, 3, 2, 5, 2};
-		int[] l9 = {3, 4};
-		System.out.println(Arrays.toString(CheckForAloneNumbers(l7,2)));
-		System.out.println(Arrays.toString(CheckForAloneNumbers(l8,2)));
-		System.out.println(Arrays.toString(CheckForAloneNumbers(l9,3)));
-		//Problem 4
-		System.out.println("\nProblem 4:");
-		int[] l10 = {0, 5, 0, 3};
-		int[] l11 = {0, 4, 0, 3};
-		int[] l12 = {0, 1, 0};
-		System.out.println(Arrays.toString(ReplaceZerosWithLargestOdd(l10)));
-		System.out.println(Arrays.toString(ReplaceZerosWithLargestOdd(l11)));
-		System.out.println(Arrays.toString(ReplaceZerosWithLargestOdd(l12)));
-		//Problem 5
-		System.out.println("\nProblem 5:");
-		System.out.println(Arrays.toString(CreateIncreasingArray(5, 10)));
-		System.out.println(Arrays.toString(CreateIncreasingArray(11, 18)));
-		System.out.println(Arrays.toString(CreateIncreasingArray(1, 3)));
-		//Problem 6
-		System.out.println("\nProblem 6:");
-		int[] l13 = {1, 2, 4, 1};
-		int[] l14 = {3, 1, 4};
-		int[] l15 = {1, 4, 4};
-		System.out.println(Arrays.toString(CopyNumbersBeforeFour(l13)));
-		System.out.println(Arrays.toString(CopyNumbersBeforeFour(l14)));
-		System.out.println(Arrays.toString(CopyNumbersBeforeFour(l15)));
-		//Problem 7
-		System.out.println("\nProblem 7:");
-		int[] l16 = {1, 0, 0, 1};
-		int[] l17 = {0, 1, 1, 0, 1};
-		int[] l18 = {1, 0};
-		System.out.println(Arrays.toString(MoveZerosToFront(l16)));
-		System.out.println(Arrays.toString(MoveZerosToFront(l17)));
-		System.out.println(Arrays.toString(MoveZerosToFront(l18)));
-		//Problem 8
-		System.out.println("\nProblem 8:");
-		int[] l19 = {1, 0, 1, 0, 0, 1, 1};
-		int[] l20 = {3, 3, 2};
-		int[] l21 = {2, 2, 2};
-		System.out.println(Arrays.toString(EvenFrontOddBack(l19)));
-		System.out.println(Arrays.toString(EvenFrontOddBack(l20)));
-		System.out.println(Arrays.toString(EvenFrontOddBack(l21)));
+		
 	}
 	
 }
