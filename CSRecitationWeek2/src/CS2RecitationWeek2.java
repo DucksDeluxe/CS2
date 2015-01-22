@@ -37,11 +37,16 @@ public class CS2RecitationWeek2
 
     	static int[] DoHeapSort( int[] DataIn )
 	{
+		// added in recitation
+		nHeap = DataIn;
+		heapSize = DataIn.length;
+		BuildHeap;
 	}
 
 	// The heap (min-heap).
-	static int[] nHeap;
-
+	static int[] nHeap;			// from array, parent of node = (nodeIndex - 1) / 2
+								// from array, left child of node = nodeIndex * 2 + 1
+								// from array, right child = nodeIndex * 2 + 2
 	// Randomly generated numbers to be used as input.
 	static int[] nRandomNumbers;
 
