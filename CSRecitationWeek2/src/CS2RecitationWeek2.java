@@ -139,6 +139,7 @@ public class CS2RecitationWeek2
 	static int[] nHeap;			// from array, parent of node = (nodeIndex - 1) / 2
 								// from array, left child of node = nodeIndex * 2 + 1
 								// from array, right child = nodeIndex * 2 + 2
+	
 	// Randomly generated numbers to be used as input.
 	static int[] nRandomNumbers;
 
@@ -159,6 +160,8 @@ public class CS2RecitationWeek2
 	 */
 	private static int GetParentIndex(int nIndex)
 	{
+			// return parent
+			return (nIndex - 1) / 2;		
 	}
 
 	/**
@@ -168,6 +171,8 @@ public class CS2RecitationWeek2
 	 */
 	static int GetLeft( int nIndex )
 	{
+		// return left child
+		return nIndex * 2 - 1;
 	}
 	
 	/**
@@ -177,6 +182,8 @@ public class CS2RecitationWeek2
 	 */
 	static int GetRight( int nIndex )
 	{
+		// return right child
+		return nIndex * 2 + 2;
 	}
 
 	// Function to swap two numbers in an array. Auxiliary method to SiftUp and
@@ -189,6 +196,10 @@ public class CS2RecitationWeek2
 	 */
 	public static void swap(int arr[], int i, int j)
 	{
+		int nSwap;
+		nSwap = arr[i];
+		arr[i] = arr[j];
+		arr[j] = nSwap;
 	}
 	
 	/**
@@ -293,11 +304,26 @@ public class CS2RecitationWeek2
 		// array that is double the size of nHeap, copy the elements of nHeap
 		// into it, and assign nHeap to be the new larger array
 
+		if(!(heapSize+1 <= nHeap.length))
+		{
+			int i = 0;
+			int[] newHeap = new int[nHeap.length*2];
+			while (i < nHeap.length)
+			{
+				newHeap[i] = nHeap[i];
+				i++;
+			}
+			nHeap = newHeap;
+		}
+		
 		// Algorithm:
 
 		// Increase heapSize by 1
 		// Copy nNumber to index heapSize-1 of the heap
 		// SiftUp(heapSize-1)
+		nHeap[heapSize] = nNumber;
+		heapSize++;
+		SiftUp(heapSize-1);
 	}
 	
 	/**
@@ -309,6 +335,19 @@ public class CS2RecitationWeek2
 		// repeatedly sift up the element at nNodeIndex as long as its parent
 		// node is greater or the element is the root (this is similar to
 		// Heapify but it moves the element upwards instead of downwards)
+
+		// base case
+		if (nNodeIndex == 0)
+			return;
+		
+		// do we need to swap?
+		if ( nHeap[nNodeIndex] < nHeap[GetParentIndex(nNodeIndex)])
+			swap(nHeap, nNodeIndex, GetParentIndex(nNodeIndex));
+
+		// do it again
+		SiftUp(nNodeIndex);
+		
+		return;
 	}
 
 	///////////////////////////////////////////
