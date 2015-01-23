@@ -245,7 +245,7 @@ public class CS2ProgrammingWeek2
 	static int[] CreateIncreasingArray(int start, int end) 
 	{
 		// make sure we don't get dupped
-		if ( end < start )
+		if ( end <= start  || start + 1 == end)
 		{
 			int[] emptyArray = {};
 			return emptyArray;
