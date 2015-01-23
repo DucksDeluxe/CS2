@@ -27,10 +27,12 @@ public class CS2RecitationWeek2
 		return( "VanWinkle,Justin,J3338546");
 	}
 	
+	/**
+	 * @param DataIn is an array of integers
+	 * @return DataOut contains the integers from DataIn, except sorted
+	 */
 	static int[] DoBubbleSort( int[] DataIn )
 	{
-		try
-		{
 			boolean bDirty;
 			int nSwap;
 			
@@ -63,9 +65,11 @@ public class CS2RecitationWeek2
 						// note that we need to run again
 						bDirty = true;
 						
-						// swap values
+						// copy val i
 						nSwap = DataOut[i];
+						// move val i+1 over
 						DataOut[i] = DataOut[i+1];
+						// replace val i+1 with swap val
 						DataOut[i+1] = nSwap;
 					}	
 				}
@@ -73,19 +77,16 @@ public class CS2RecitationWeek2
 			
 			// we are done
 			return DataOut;
-		}
 
-		// Safety net to keep things moving.
-		catch
-		{
-			return DataIn;
-		}
 	}
     
-    	static int[] DoInsertSort( int[] DataIn )
+	/**
+	 * 
+	 * @param DataIn
+	 * @return
+	 */
+    static int[] DoInsertSort( int[] DataIn )
 	{
-		try
-		{
 			int nSwap;
 			int j;
 			
@@ -107,29 +108,31 @@ public class CS2RecitationWeek2
 			for (int i=1; i<DataOut.length; i++)
 			{
 				j = i;
+				
+				// swap the value all the way to its proper position
 				while ( DataOut[j] < DataOut[j-1] && j > -1 )
 				{
+					// swap
 					nSwap = DataOut[j];
-					DataOut[j] = DataOut[j-1]
-					DataOut[j-1] = swap;
+					DataOut[j] = DataOut[j-1];
+					DataOut[j-1] = nSwap;
 					j--;
 				}
 			}
 			return DataOut;
-		}
-		
-		catch
-		{
-		
-		}
 	}
 
+    /**
+     * 
+     * @param DataIn
+     * @return
+     */
     	static int[] DoHeapSort( int[] DataIn )
 	{
 		// added in recitation
 		nHeap = DataIn;
 		heapSize = DataIn.length;
-		BuildHeap;
+		BuildHeap();
 	}
 
 	// The heap (min-heap).
@@ -149,24 +152,48 @@ public class CS2RecitationWeek2
 	// GetLeft and GetRight must be verified to actually exist within the heap
 	// (use heapSize to determine this).
 
+	/**
+	 * 
+	 * @param nIndex
+	 * @return
+	 */
 	private static int GetParentIndex(int nIndex)
 	{
 	}
 
+	/**
+	 * 
+	 * @param nIndex
+	 * @return
+	 */
 	static int GetLeft( int nIndex )
 	{
 	}
 	
+	/**
+	 * 
+	 * @param nIndex
+	 * @return
+	 */
 	static int GetRight( int nIndex )
 	{
 	}
 
 	// Function to swap two numbers in an array. Auxiliary method to SiftUp and
 	// Heapify.
-    	public static void swap(int arr[], int i, int j)
-    	{
-    	}
+	/**
+	 * 
+	 * @param arr
+	 * @param i
+	 * @param j
+	 */
+	public static void swap(int arr[], int i, int j)
+	{
+	}
 	
+	/**
+	 * 
+	 */
 	static void BuildHeap()
 	{
 		// Input: static field nHeap, an array of ints, representing a full
@@ -193,7 +220,10 @@ public class CS2RecitationWeek2
 		//      Heapify(i)
 	}
 	
-	
+	/**
+	 * 
+	 * @param nIndex
+	 */
 	static void Heapify( int nIndex )
 	{
 		// Input: static field nHeap, an array of ints, representing a full
@@ -243,6 +273,10 @@ public class CS2RecitationWeek2
 	// However, AddElement is useful to add new elements into an existing heap
 	// once it has been built with BuildHeap.
 
+	/**
+	 * 
+	 * @param nNumber
+	 */
 	static void AddElement( int nNumber )
 	{
 		// Input: static fields nHeap, heapSize. nHeap must already be a valid
@@ -266,6 +300,10 @@ public class CS2RecitationWeek2
 		// SiftUp(heapSize-1)
 	}
 	
+	/**
+	 * 
+	 * @param nNodeIndex
+	 */
 	static void SiftUp( int nNodeIndex )
 	{
 		// repeatedly sift up the element at nNodeIndex as long as its parent
@@ -279,6 +317,10 @@ public class CS2RecitationWeek2
 	//
 	///////////////////////////////////////////
 
+	/**
+	 * 
+	 * @param n
+	 */
 	public static void setRandomArray(int n)
 	{
 		Random rnd = new Random();
