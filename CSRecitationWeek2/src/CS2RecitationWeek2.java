@@ -73,7 +73,7 @@ public class CS2RecitationWeek2
 						DataOut[i+1] = nSwap;
 					}	
 				}
-			}while(!bDirty);
+			}while(bDirty);
 			
 			// we are done
 			return DataOut;
@@ -110,14 +110,17 @@ public class CS2RecitationWeek2
 				j = i;
 				
 				// swap the value all the way to its proper position
-				while ( DataOut[j] < DataOut[j-1] && j > -1 )
+				while ( DataOut[j] < DataOut[j-1])
 				{
 					// swap
 					nSwap = DataOut[j];
 					DataOut[j] = DataOut[j-1];
 					DataOut[j-1] = nSwap;
 					j--;
+					if (j < 1)
+						break;
 				}
+
 			}
 			return DataOut;
 	}
@@ -133,6 +136,7 @@ public class CS2RecitationWeek2
 		nHeap = DataIn;
 		heapSize = DataIn.length;
 		BuildHeap();
+		return nHeap;
 	}
 
 	// The heap (min-heap).
@@ -171,8 +175,12 @@ public class CS2RecitationWeek2
 	 */
 	static int GetLeft( int nIndex )
 	{
+		// show there is no child
+		if (nIndex * 2 + 1 >= nHeap.length - 1)
+			return -1;
+		
 		// return left child
-		return nIndex * 2 - 1;
+		return nIndex * 2 + 1;
 	}
 	
 	/**
@@ -182,6 +190,10 @@ public class CS2RecitationWeek2
 	 */
 	static int GetRight( int nIndex )
 	{
+		// show there is no child
+		if (nIndex * 2 + 2 > nHeap.length - 1)
+			return -1;
+		
 		// return right child
 		return nIndex * 2 + 2;
 	}
@@ -229,6 +241,11 @@ public class CS2RecitationWeek2
 
 		// for i = GetParentIndex(heapSize-1) DOWN TO  0:
 		//      Heapify(i)
+		
+		for (int i = GetParentIndex(heapSize-1); i > -1; i--)
+		{
+			Heapify(i);
+		}
 	}
 	
 	/**
@@ -253,7 +270,7 @@ public class CS2RecitationWeek2
 
 		// If nIndex is a leaf node (has no children), then there is nothing to
 		// do (use heapSize to determine this)
-
+		
 		// leftIdx <- GetLeft(nIndex)
 		// rightIdx <- GetRight(nIndex)
 
@@ -271,6 +288,59 @@ public class CS2RecitationWeek2
 
 		//    swap node values at indexes smallest and nIndex
 		//    Heapify(smallest)
+
+		// do you know who your children are?
+		int iL = GetLeft(nIndex);
+		int iR = GetRight(nIndex);
+	
+		// don't have kids?
+		if ( iL == -1 && iR == -1)
+		{
+			// let's heapify your neighbor
+			Heapify(nIndex-1);
+		}
+		
+		// do you have two children?
+		else if ( iL != -1 && iR != -1)
+		{
+			// left child is smallest?
+			if (nHeap[iL] < nHeap[iR])
+			{
+				// child smaller than parent?
+				if (nHeap[iL] < nHeap[nIndex])
+				{
+					// swap
+					swap(nHeap, iL, nIndex);
+					// repeat
+					Heapify(iL);
+				}
+			}
+			// right child is smallest?
+			else if (nHeap[iR] < nHeap[iL])
+			{
+				// child smaller than parent?
+				if (nHeap[iR] < nHeap[nIndex])
+				{
+					// swap
+					swap(nHeap, iR, nIndex);					
+					// repeat
+					Heapify(iR);
+				}
+			}
+		}
+		
+		// left child but no right
+		else if ( iL != -1 && iR == -1)
+		{
+			// child smaller than parent?
+			if (nHeap[iL] < nHeap[nIndex])
+			{
+				// swap
+				swap(nHeap, iL, nIndex);
+				// repeat
+				Heapify(iL);
+			}
+		}
 	}
 
 
@@ -342,10 +412,11 @@ public class CS2RecitationWeek2
 		
 		// do we need to swap?
 		if ( nHeap[nNodeIndex] < nHeap[GetParentIndex(nNodeIndex)])
+		{
 			swap(nHeap, nNodeIndex, GetParentIndex(nNodeIndex));
-
-		// do it again
-		SiftUp(nNodeIndex);
+			// do it again
+			SiftUp(GetParentIndex(nNodeIndex));			
+		}
 		
 		return;
 	}
@@ -370,30 +441,40 @@ public class CS2RecitationWeek2
 		}
 	}
 	
+	public static void DisplayIntegerArray(int[] array)
+	{
+		System.out.print("[ ");
+		for (int i = 0; i < array.length; i++)
+			System.out.print(array[i] + " ");
+		System.out.print("]");
+		System.out.println(" ");
+	}
+	
 	public static void main(String[] args)
 	{
 		// Code to test bubble sort.
 		setRandomArray(15);
 		int[] bubbleStudentOut1 = DoBubbleSort(nRandomNumbers);
-		int[] bubbleStudentOut2 = DoBubbleSort(BubbleIn);
+		//int[] bubbleStudentOut2 = DoBubbleSort(BubbleIn);
 		DisplayIntegerArray(bubbleStudentOut1);
-		DisplayIntegerArray(bubbleStudentOut2);
+		//DisplayIntegerArray(bubbleStudentOut2);
 		
 		// Code to test insert sort.
 		setRandomArray(15);
 		int[] insertStudentOut1 = DoInsertSort(nRandomNumbers);
-		int[] insertStudentOut2 = DoInsertSort(InsertIn);
+		//int[] insertStudentOut2 = DoInsertSort(InsertIn);
 		DisplayIntegerArray(insertStudentOut1);
-		DisplayIntegerArray(insertStudentOut2);
+		//DisplayIntegerArray(insertStudentOut2);
 
 		// Code to test heap sort.
 		setRandomArray(15);
 		int[] heapStudentOut1 = DoHeapSort(nRandomNumbers);
-		int[] heapStudentOut2 = DoHeapSort(HeapIn);
+		//int[] heapStudentOut2 = DoHeapSort(HeapIn);
 		DisplayIntegerArray(heapStudentOut1);
-		DisplayIntegerArray(heapStudentOut2);
+		//DisplayIntegerArray(heapStudentOut2);
 
-		// Code to test AddElement
+		 //Code to test AddElement
+		int[] HeapIn ={7,5,3,1,9,0,2,4,6,8,499,0};
 		nHeap = new int[HeapIn.length];
 		heapSize = 0;
 		for (int i = 0; i < HeapIn.length; i++)
@@ -403,5 +484,8 @@ public class CS2RecitationWeek2
 
 		// Show the array representation of the min-heap
 		DisplayIntegerArray(nHeap);
+		AddElement(0);
+		DisplayIntegerArray(nHeap);
+
 	}
 }
