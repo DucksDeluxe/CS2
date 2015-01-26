@@ -82,8 +82,8 @@ public class CS2RecitationWeek2
     
 	/**
 	 * 
-	 * @param DataIn
-	 * @return
+	 * @param DataIn is an array of integers
+	 * @return DataOut is an array of integers that have been sorted
 	 */
     static int[] DoInsertSort( int[] DataIn )
 	{
@@ -127,8 +127,8 @@ public class CS2RecitationWeek2
 
     /**
      * 
-     * @param DataIn
-     * @return
+     * @param DataIn is an array of integers
+     * @return DataOut is a min-heap
      */
     	static int[] DoHeapSort( int[] DataIn )
 	{
@@ -202,15 +202,19 @@ public class CS2RecitationWeek2
 	// Heapify.
 	/**
 	 * 
-	 * @param arr
-	 * @param i
-	 * @param j
+	 * @param arr is an array of integers
+	 * @param i is an index
+	 * @param j in an index
 	 */
 	public static void swap(int arr[], int i, int j)
 	{
+		
 		int nSwap;
+		// store val i
 		nSwap = arr[i];
+		// swap val j into slot i
 		arr[i] = arr[j];
+		// drop old val i into slot j
 		arr[j] = nSwap;
 	}
 	
@@ -242,15 +246,17 @@ public class CS2RecitationWeek2
 		// for i = GetParentIndex(heapSize-1) DOWN TO  0:
 		//      Heapify(i)
 		
+		// loop through heap
 		for (int i = GetParentIndex(heapSize-1); i > -1; i--)
 		{
+			// heapify each element
 			Heapify(i);
 		}
 	}
 	
 	/**
 	 * 
-	 * @param nIndex
+	 * @param nIndex is an index value
 	 */
 	static void Heapify( int nIndex )
 	{
@@ -356,7 +362,7 @@ public class CS2RecitationWeek2
 
 	/**
 	 * 
-	 * @param nNumber
+	 * @param nNumber is a value to be added to the heap
 	 */
 	static void AddElement( int nNumber )
 	{
@@ -374,15 +380,20 @@ public class CS2RecitationWeek2
 		// array that is double the size of nHeap, copy the elements of nHeap
 		// into it, and assign nHeap to be the new larger array
 
+		// is there enough room?
 		if(!(heapSize+1 <= nHeap.length))
 		{
 			int i = 0;
+			// create new array
 			int[] newHeap = new int[nHeap.length*2];
+			// loop thru arrays
 			while (i < nHeap.length)
 			{
+				// copy data
 				newHeap[i] = nHeap[i];
 				i++;
 			}
+			// assign new heap
 			nHeap = newHeap;
 		}
 		
@@ -391,14 +402,18 @@ public class CS2RecitationWeek2
 		// Increase heapSize by 1
 		// Copy nNumber to index heapSize-1 of the heap
 		// SiftUp(heapSize-1)
+		
+		// Copy nNumber to index heapSize of the heap
 		nHeap[heapSize] = nNumber;
+		// Increase heapSize by 1
 		heapSize++;
+		// SiftUp
 		SiftUp(heapSize-1);
 	}
 	
 	/**
 	 * 
-	 * @param nNodeIndex
+	 * @param nNodeIndex is an index
 	 */
 	static void SiftUp( int nNodeIndex )
 	{
