@@ -419,6 +419,7 @@ public class CS2ProgrammingWeek1
 		int[] nArray18 = {-10,-4,-2,-4,-2,0};
 		nResult = FindCenteredAverage(nArray18);
 		assert nResult == -3;
+		
 		///////////////////////////////////////////////////
 
 		///////////////////////////////////////////////////
@@ -428,7 +429,7 @@ public class CS2ProgrammingWeek1
 		assert bResult == true;
 		
 		// LookForTwoTwo({2, 2, 4}) → true
-		int[] nArray20 = {2,2,4};
+		int[] nArray20 = {2,2,2};
 		bResult = LookForTwoTwo(nArray20);
 		assert bResult == true;
 		
