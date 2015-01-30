@@ -43,7 +43,20 @@ public class CS2RecitationWeek3
         
         static int getFibonatchiNumber(int FibonatchiNumber)
         {
-		 // jcv: do multiple calls - don't store values for F(i)
+        	// half of base case
+        	// also serves as boundary protection
+        	if (FibonatchiNumber <=0 )
+        	{
+        		return 0;
+        	}
+        	// other half of base case
+        	else if ( FibonatchiNumber == 1)
+        	{
+        		return 1;
+        	}
+        	
+        	// return the sum of the sequential step
+        	return getFibonatchiNumber(FibonatchiNumber-1) + getFibonatchiNumber(FibonatchiNumber-2);
         }
     
         
@@ -84,6 +97,7 @@ public class CS2RecitationWeek3
 	
         public static void main(String[] args)
 		{       
+        	System.out.println(getFibonatchiNumber(7));
         }//End of main
 
 }
