@@ -22,7 +22,7 @@ public class CS2RecitationWeek3
 	 */
 	static String GetNameAndPID()
 	{
-		return( "Last,First,PID");
+		return( "VanWinkle,Justin,J3338546");
 	}    
         
         /*  Directions: Recursive function that returns the value of a desired Fibonatchi number
@@ -45,11 +45,12 @@ public class CS2RecitationWeek3
         {
         	// half of base case
         	// also serves as boundary protection
-        	if (FibonatchiNumber <=0 )
+        	if ( FibonatchiNumber <=0 )
         	{
         		return 0;
         	}
         	// other half of base case
+        	// without this, we would be stuck at 0
         	else if ( FibonatchiNumber == 1)
         	{
         		return 1;
@@ -75,6 +76,23 @@ public class CS2RecitationWeek3
     
         static int getFactorialNumber(int FactorialNumber)
         {
+        	// NOT BASE CASE - this would break our value since negative factorials are undefined
+        	// serves as boundary protection only
+        	if ( FactorialNumber < 0 )
+        	{
+        		// can't return + or - infinity, so 0 is the next best thing
+        		return 0;
+        	}
+        	// base case
+        	else if ( FactorialNumber == 0 )
+        	{
+        		// 0! = 1
+        		return 1;
+        	}
+        	
+        	// for each step of the sequence, return the multiplicative
+        	// from the previous step in
+        	return FactorialNumber * getFactorialNumber(FactorialNumber-1);
         }
     
         /*  Directions: Recursive function that adds up the the squares of a range of two integer values
@@ -92,12 +110,57 @@ public class CS2RecitationWeek3
         
         static int SumSquaresOfRange(int x , int y)
         {
-		//jcv: if y>x, swap x and y
+        	// according to T.A. Michael G:
+        	// if y < x, swap x and y
+        	if ( y < x )
+        	{
+        		// copy x
+        		int swap = x;
+        		// put y in x
+        		x = y;
+        		// put the old x in y
+        		y = swap;
+        	}
+        	
+        	// base case - don't pass highest value
+        	if ( x == y )
+        	{
+        		// return square
+        		return x * x;
+        	}
+        	
+        	// return x*x + the next step in the sequence
+        	return SumSquaresOfRange(x+1, y) + x*x;
         }
 	
         public static void main(String[] args)
-		{       
+		{
+        	System.out.println(getFibonatchiNumber(-5));
+        	System.out.println(getFibonatchiNumber(-1));
+        	System.out.println(getFibonatchiNumber(0));
+        	System.out.println(getFibonatchiNumber(1));
+        	System.out.println(getFibonatchiNumber(2));
         	System.out.println(getFibonatchiNumber(7));
+        	System.out.println(getFibonatchiNumber(17));
+        	
+        	System.out.println(getFactorialNumber(-5));
+        	System.out.println(getFactorialNumber(-1));
+        	System.out.println(getFactorialNumber(0));
+        	System.out.println(getFactorialNumber(1));
+        	System.out.println(getFactorialNumber(7));
+        	System.out.println(getFactorialNumber(12));
+        	
+        	System.out.println(SumSquaresOfRange(5, 10));
+        	System.out.println(SumSquaresOfRange(10, 5));
+        	System.out.println(SumSquaresOfRange(-1, 1));
+        	System.out.println(SumSquaresOfRange(0, 0));
+        	System.out.println(SumSquaresOfRange(1, -1));
+        	System.out.println(SumSquaresOfRange(5, 5));
+        	System.out.println(SumSquaresOfRange(-10, -5));
+        	System.out.println(SumSquaresOfRange(-5, -10));
+        	System.out.println(SumSquaresOfRange(-5, 5));
+        	System.out.println(SumSquaresOfRange(5, -5));
+
         }//End of main
 
 }
