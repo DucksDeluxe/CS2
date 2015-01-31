@@ -23,7 +23,7 @@ public class CS2ProgrammingWeek3
 	 */
 	static String GetNameAndPID()
 	{
-		return( "Last,First,PID");
+		return( "VanWinkle,Justin,J3338546");
 	}
 	
 	//	Problem #1
@@ -51,7 +51,57 @@ public class CS2ProgrammingWeek3
 	 */
 	static boolean subCopies(String str, String sub, int n) 
 	{
+		int nSubIndex = -1;
 		
+		/***PROTECTION***/
+		// there can't be negative instances
+		if ( n < 0 )
+			return false;
+		// get empty string but checking for other
+		else if (str == "" && sub != "")
+			return false;
+		// what if we get and check for an empty string?
+		else if (str == "" && sub == "" && n == 1)
+			return true;
+		/***END PROTECTION***/
+		
+		// locate the first sub in str
+		nSubIndex = str.indexOf(sub);
+		
+		/***BASE CASES*///
+		// Base Case #1
+		// n != 0 && no sub was found
+		if (nSubIndex == -1 && n != 0)
+		{
+			return false;
+		}
+		
+		// Base Case #2
+		// n = 0 && a sub was found
+		// this would mean we have at least n+1 subs
+		else if (n == 0 && nSubIndex != -1)
+		{
+			return false;
+		}
+		
+		// Base Case #3
+		// n = 0 && no sub found
+		else if (n == 0 && nSubIndex == -1)
+		{
+			return true;
+		}
+		/***END BASE CASES***/
+		
+		// if there should be another sub and it has been located
+		if (n != 0 && nSubIndex != -1)
+		{
+			// create a new string to pass down starting at nSubIndex + 1
+			String newStr = str.substring(nSubIndex + 1);
+			// make a new call with the new string and one less sub
+			subCopies(newStr, sub, n-1);
+		}
+		// feeding the eclipse monster
+		return true;
 	}
 
 	//	Problem #2
@@ -74,6 +124,30 @@ public class CS2ProgrammingWeek3
 	 */
 	static int sumDigitsInNumber(int n) 
 	{
+		int nDigit;
+		int nSum = 0;
+		
+		// Base Case
+		// n has nothing left
+		if ( n == 0 )
+		{
+			return 0;
+		}
+		
+		// get lowest digit
+		nDigit = n % 10;
+		
+		// strip n of lowest digit
+		n /= 10;
+		
+		// step down with new n and grab that value
+		nSum = sumDigitsInNumber(n);
+		
+		// add the stripped digit to the sum
+		nSum += nDigit;
+		
+		// pass the sum back up
+		return nSum;
 	}	
 
 	//	Problem #3
@@ -95,6 +169,17 @@ public class CS2ProgrammingWeek3
 	 */
 	static int exponential(int base, int n) 
 	{
+		// Base Case
+		// n = 1
+		if ( n == 1 )
+		{
+			return base;
+		}
+		
+		// return product of the base and the next step down
+		return base * exponential(base, n-1);
+		
+		
 	}	
 
 	//	Problem #4
@@ -114,7 +199,17 @@ public class CS2ProgrammingWeek3
 	 * 		String of characters where the lowercase x's have been changed to y's
 	 */
 	public static String changeXtoY(String str) 
-	{
+	{		
+		// if no x in string, we are done
+		if (str.indexOf("x") == -1)
+		{
+			return str;
+		}
+		// replace the first x with a y
+		String strNew = str.replaceFirst("x", "y");
+		
+		// step down and pass the result up
+		return changeXtoY(strNew);		
 	}
 	
 	//	Problem #5
@@ -140,6 +235,23 @@ public class CS2ProgrammingWeek3
 	 */
 	static boolean find6(int[] nums, int index) 
 	{
+		// Base Case #1
+		// there was no six
+		if (index == nums.length)
+			return false;
+		
+		// Base Case #2
+		// we found a 6!
+		if( nums[index] == 6)
+			return true;
+		
+		// this one isn't a 6
+		if ( nums[index] != 6)
+			// step down and return findings
+			return find6(nums, index+1);
+		
+		// feed the eclipse monster!
+		return true;
 	}
 	
 	//	Problem #6
@@ -160,7 +272,28 @@ public class CS2ProgrammingWeek3
 	 */
 	static String insertAsterisk(String str) 
 	{
-	//jcv: according to TA: put asterisk between whitespaces, too.
+	//jcv: according to TA Michael G.: put asterisk between whitespaces, too.
+				
+		// check for null String
+		if (str.length() < 1)
+			return str;
+		
+		// grab the first char and give it an asterisk
+		String strReturn = str.substring(0, 0) + "*";
+		
+		// do we need to make another call?
+		if (str.length() > 2)
+		{
+		// send the rest of the string down a step and concat the result
+		strReturn.concat(insertAsterisk(str.substring(1)));
+		}
+		// no more calls to make
+		else
+		{
+			return str.substring(1);
+		}
+		// send back the findings
+		return strReturn;
 	}
 	
 	//	Problem #7
@@ -185,6 +318,20 @@ public class CS2ProgrammingWeek3
 	static int numberPairs(String str) 
 	{
 	//jcv: must be matching case, length 3 strings for pairs
+		
+		// Base case
+		// not enough letters left to search
+		if (str.length() < 3)
+			return 0;
+		
+		// Do the first three chars contain a match?
+		if (str.charAt(0) == str.charAt(2))
+			// remove first char, step down, and return result + everything below
+			return 1 + numberPairs(str.substring(1));
+		
+		// no match found here
+		// remove first char, step down, and return result of everything below
+		return numberPairs(str.substring(1));
 	}
 	
 	//	Problem #8
@@ -207,6 +354,29 @@ public class CS2ProgrammingWeek3
 	static String reduceChars(String str) 
 	{
 	//jcv: check out startswith and endswith
+		
+		String strReturn;
+		char cStrip;
+		
+		// Base Case
+		// no comparisons left
+		if ( str.length() < 2 )
+			return str;
+		
+		// do the first two match?
+		if (str.charAt(0) == str.charAt(1))
+		{
+			// peel off the first char
+			// check at the next char and pass the result up
+			return reduceChars(str.substring(1));
+		}
+		
+		// there was no match
+		// grab the first char
+		cStrip = str.charAt(0);
+		
+		// step down to grab the next char and return the result, building the string on the way up
+		return cStrip + reduceChars(str.substring(1));
 	}
 	
 	//	Problem #9
@@ -227,9 +397,14 @@ public class CS2ProgrammingWeek3
 	 * 		returns true if there are zero or more pairs of parenthesis
 	 * 		returns false if there are not zero or more pairs of parenthesis
 	 */
-	static boolean nestedParens(String str) 
-	{
-	}
+	
+	
+	//TODO attempt this!
+	//static boolean nestedParens(String str) 
+	//{
+	//}
+	
+	
 	
 	//	Problem #10
 
@@ -254,6 +429,74 @@ public class CS2ProgrammingWeek3
 	static int subStrSub(String str, String sub) 
 	{
 	//jcv: start left and right.  left, look for sub - that's the start.  right, look for sub - that's the end.  
+		
+		// if we aren't starting with sub
+		if (!str.startsWith(sub))
+		{
+			// cut out everything in front of sub and call a step down with it
+			// then return the results
+			System.out.println(str.substring(str.indexOf(sub)));
+			return subStrSub(str.substring(str.indexOf(sub)), sub);
+		}
+		
+		// if we don't end with sub
+		if (!str.endsWith(sub))
+		{
+			// cut out everything beyond sub and call a step down with it
+			// then return the results
+			System.out.println(str.substring(0, str.lastIndexOf(sub) + sub.length()));
+			return subStrSub(str.substring(0, str.lastIndexOf(sub) + sub.length()), sub);
+		}
+		
+		// we cut out the fluff - count and return!
+		return str.length();
+			
+		
+//		// safety
+//		if (str.isEmpty() || sub.isEmpty())
+//		{
+//			return 0;
+//		}
+//	
+//		// Base Case
+//		// we found the largest substring
+//		if ( str.startsWith(sub) && str.endsWith(sub) )
+//		{
+//			return str.length();
+//		}
+//		
+//		// we haven't found anything
+//		else if ( !(str.startsWith(sub) &&  str.endsWith(sub)))
+//		{
+//			// it just isn't here...
+//			if (str.length() == 1)
+//			{
+//				return 0;
+//			}
+//			// make sure we don't pass our outer boundaries
+//			if (str.length() >=2)
+//			{
+//				// call step down with a new substring
+//				System.out.println(str.lastIndexOf(sub));
+//				return subStrSub(str.substring(str.indexOf(sub), str.lastIndexOf(sub) + sub.length() - 2), sub);
+//			}
+//		}
+//		
+//		// we have the end but not the start
+//		else if ( !str.startsWith(sub) && str.endsWith(sub) )
+//		{
+//			// step in with the first char stripped off
+//			return subStrSub(str.substring(1), sub);
+//		}
+//		
+//		// we have the start but not the end
+//		else if ( str.startsWith(sub) && !str.endsWith(sub) && str.length() >= 2)
+//		{
+//			// step in with the last char stripped off
+//			return subStrSub(str.substring(0, str.length()-2), sub);
+//		}
+//		// something went MAJORLY wrong!
+//		return 0;
 	}
 	
 	///////////////////////////////////////////
@@ -264,6 +507,58 @@ public class CS2ProgrammingWeek3
 	
 	public static void main(String[] args)
 	{
+		
+		assert subCopies("catcowcat", "cat", 2) == true;
+		//assert subCopies("catcowcat", "cow", 2) == false;
+		assert subCopies("catcowcat", "cow", 1) == true;
+		
+		assert sumDigitsInNumber(126) == 9;
+		assert	sumDigitsInNumber(49) == 13;
+		assert	sumDigitsInNumber(12) == 3;
+		
+		assert	exponential(3, 1) == 3;
+		assert	exponential(3, 2) == 9;
+		assert	exponential(3, 3) == 27;
+	
+		System.out.println(changeXtoY("codex"));
+		//assert changeXtoY("codex") == "codey";
+		System.out.println(changeXtoY("xxhixx"));
+		//assert changeXtoY("xxhixx") == "yyhiyy";
+		System.out.println(changeXtoY("xhixhix"));
+		//assert changeXtoY("xhixhix") == "yhiyhiy";
+		
+		int[] array1 = {1, 6, 4};
+		int[] array2 = {1, 4};
+		int[] array3 = {6};
+		assert find6(array1, 0) == true;
+		assert find6(array2, 0) == false;
+		assert find6(array3, 0) == true;	
+		
+		System.out.println(insertAsterisk("hello"));
+		//assert	insertAsterisk("hello") == "h*e*l*l*o";
+		System.out.println(insertAsterisk("abc"));
+		//assert	insertAsterisk("abc") == "a*b*c";
+		System.out.println(insertAsterisk("ab"));
+		//assert	insertAsterisk("ab") == "a*b";
+		
+		assert	numberPairs("axa") == 1;
+		assert	numberPairs("axax") == 2;
+		assert	numberPairs("axbx") == 1;
+		
+		System.out.println(reduceChars("yyzzza"));
+		//assert	reduceChars("yyzzza") == "yza";
+		System.out.println(reduceChars("abbbcdd"));
+		//assert	reduceChars("abbbcdd") == "abcd";
+		System.out.println(reduceChars("Hello"));
+		//assert	reduceChars("Hello") == "Helo";
+		
+		//	nestedParens("(())") == true;
+		//	nestedParens("((()))") == true;
+		//	nestedParens("(((x))") == false;
+		
+		assert	subStrSub("catcowcat", "cat") == 9;
+		assert	subStrSub("catcowcat", "cow") == 3;
+		assert	subStrSub("cccatcowcatxx", "cat") == 9;
 	}
 	
 }
