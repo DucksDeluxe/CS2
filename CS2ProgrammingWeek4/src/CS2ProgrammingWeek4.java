@@ -58,6 +58,7 @@ public class CS2ProgrammingWeek4
 		
 		// base case
 		if(target == 0)
+			// solution found
 			return true;
 		
 		// traversed to the end of the array
@@ -67,12 +68,12 @@ public class CS2ProgrammingWeek4
 		
 		// first route
 		else if ( groupSumsTarget(start++, nums, target-nums[start]) )
-			// this route worked.
+			// this route is a candidate.
 			return true;
 		
 		// alternate route
 		else if( groupSumsTarget(start++, nums, target) )
-			// this route worked
+			// this route is a candidate
 			return true;
 		
 		// no solution was found
@@ -102,6 +103,39 @@ public class CS2ProgrammingWeek4
 	 */
 	static boolean groupSumsTarget6(int start, int[] nums, int target) 
 	{
+		// base case
+		if ( target == 0 )
+			// solution found
+			return true;
+		
+		// traversed to end of array
+		else if ( start == nums.length )
+			// begin backtracking
+			return false;
+		
+		// we need a main and alternate path for all non sixes
+		if ( nums[start] != 6 )
+		{
+			// main path
+			if ( groupSumsTarget6(start++, nums, target-nums[start]) )
+				return true;
+		
+			// alternate path
+			else if ( groupSumsTarget6(start++, nums, target) )
+				return true;
+		}
+		
+		// we don't want an alternate path for any sixes
+		else if ( nums[start == 6] )
+		{
+			// main and only path
+			if ( groupSumsTarget6(start++, nums, target-nums[start]) )
+				return true;
+		}
+			
+		// no solution found
+		else return false;
+		
 	}	
 
 	//	Problem #3
