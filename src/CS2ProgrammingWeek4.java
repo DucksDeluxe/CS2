@@ -55,12 +55,27 @@ public class CS2ProgrammingWeek4
 	 */
 	static boolean groupSumsTarget(int start, int[] nums, int target) 
 	{
+		// base case
 		if(target == 0)
 			return true;
-		if (start == nums.length)
+		
+		// traversed to the end of the array
+		else if (start == nums.length)
+			// time to backtrack
 			return false;
 		
-		return groupSumsTarget(start++, nums, target-nums[start]);
+		// first route
+		else if ( groupSumsTarget(start++, nums, target-nums[start]) )
+			// this route worked.
+			return true;
+		
+		// alternate route
+		else if( groupSumsTarget(start++, nums, target) )
+			// this route worked
+			return true;
+		
+		// no solution was found
+		else return false;
 	}
 
 	//	Problem #2
