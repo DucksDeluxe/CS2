@@ -162,6 +162,25 @@ public class CS2ProgrammingWeek4
 	 */
 	static boolean groupSumsTargetNoAdj(int start, int[] nums, int target) 
 	{
+		// base case
+		if ( target == 0)
+			return true;
+		
+		// traversed beyond end of array, now backtrack
+		else if ( start >= nums.length )
+			return false;
+		
+		// main path
+		else if ( groupSumsTarget(start+2, nums, target-nums[start]) )
+			return true;
+		
+		// alternate path
+		else if ( groupSumsTargetNoAdj(start+2, nums, target) )
+			return true;
+		
+		// no solution found
+		return false;
+		
 	}	
 
 	//	Problem #4
@@ -188,6 +207,25 @@ public class CS2ProgrammingWeek4
 	 */
 	static boolean groupSumsTarget5(int start, int[] nums, int target) 
 	{
+		// base case
+		if ( target == 0 )
+			return true;
+		
+		// end of array - start backtracking
+		else if ( start == nums.length )
+			return false;
+		
+		// main path
+		else if ( groupSumsTarget5(start++, nums, target-nums[start]) )
+			return true;
+					
+		// if the nums[start] is a multiple of 5, there is no alternate
+		else if ( nums[start] % 5 != 0 )
+			if ( groupSumsTarget5(start++, nums, target) )
+				return true;
+		
+		// no solution found
+		return false;
 	}
 	
 	//	Problem #5
@@ -216,6 +254,43 @@ public class CS2ProgrammingWeek4
 	 */
 	static boolean groupSumsTargetClump(int start, int[] nums, int target) 
 	{
+		int nClump = 1;
+		
+		// base case
+		if ( target == 0 )
+			return true;
+		
+		// end of array, backtrack
+		else if ( start == nums.length )
+			return false;
+		
+		// check for clump
+		for ( int i = start; i+1 < nums.length; i++ )
+			// current val = next val?
+			if  (nums[i] == nums[i+1] )
+				// count the matching val in the clump
+				nClump++;
+		
+		// if we are at the start of a clump,
+		if ( nClump > 1 )
+		{	
+			// the main route includes the entire clump
+			if ( groupSumsTargetClump(start + nClump, nums, target - nums[start] * nClump) )
+				return true;
+			// the alternate route disregards the entire clump
+			else if ( groupSumsTargetClump(start + nClump, nums, target) )
+				return true;
+		}
+		
+		// main route if we are NOT in a clump
+		else if ( groupSumsTargetClump(start++, nums, target-nums[start]) )
+			return true;
+		// alternate route if we are NOT in a clump
+		else if ( groupSumsTargetClump(start++, nums, target) )
+			return true;
+		
+		// no solution found
+		return false;
 	}
 	
 	//	Problem #6
