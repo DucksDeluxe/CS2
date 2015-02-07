@@ -23,7 +23,7 @@ public class CS2ProgrammingWeek4
 	 */
 	static String GetNameAndPID()
 	{
-		return( "Last,First,PID");
+		return( "VanWinkle,Justin,J3338546");
 	}
 	
 	//	Problem #1
@@ -67,12 +67,12 @@ public class CS2ProgrammingWeek4
 			return false;
 		
 		// first route
-		else if ( groupSumsTarget(start++, nums, target-nums[start]) )
+		else if ( groupSumsTarget(start+1, nums, target-nums[start]) )
 			// this route is a candidate.
 			return true;
 		
 		// alternate route
-		else if( groupSumsTarget(start++, nums, target) )
+		else if( groupSumsTarget(start+1, nums, target) )
 			// this route is a candidate
 			return true;
 		
@@ -117,24 +117,24 @@ public class CS2ProgrammingWeek4
 		if ( nums[start] != 6 )
 		{
 			// main path
-			if ( groupSumsTarget6(start++, nums, target-nums[start]) )
+			if ( groupSumsTarget6(start+1, nums, target-nums[start]) )
 				return true;
 		
 			// alternate path
-			else if ( groupSumsTarget6(start++, nums, target) )
+			else if ( groupSumsTarget6(start+1, nums, target) )
 				return true;
 		}
 		
 		// we don't want an alternate path for any sixes
-		else if ( nums[start == 6] )
+		else if ( nums[start] == 6 )
 		{
 			// main and only path
-			if ( groupSumsTarget6(start++, nums, target-nums[start]) )
+			if ( groupSumsTarget6(start+1, nums, target-nums[start]) )
 				return true;
 		}
 			
 		// no solution found
-		else return false;
+		return false;
 		
 	}	
 
@@ -216,12 +216,12 @@ public class CS2ProgrammingWeek4
 			return false;
 		
 		// main path
-		else if ( groupSumsTarget5(start++, nums, target-nums[start]) )
+		else if ( groupSumsTarget5(start+1, nums, target-nums[start]) )
 			return true;
 					
 		// if the nums[start] is a multiple of 5, there is no alternate
 		else if ( nums[start] % 5 != 0 )
-			if ( groupSumsTarget5(start++, nums, target) )
+			if ( groupSumsTarget5(start+1, nums, target) )
 				return true;
 		
 		// no solution found
@@ -283,10 +283,10 @@ public class CS2ProgrammingWeek4
 		}
 		
 		// main route if we are NOT in a clump
-		else if ( groupSumsTargetClump(start++, nums, target-nums[start]) )
+		else if ( groupSumsTargetClump(start+1, nums, target-nums[start]) )
 			return true;
 		// alternate route if we are NOT in a clump
-		else if ( groupSumsTargetClump(start++, nums, target) )
+		else if ( groupSumsTargetClump(start+1, nums, target) )
 			return true;
 		
 		// no solution found
@@ -315,10 +315,91 @@ public class CS2ProgrammingWeek4
 	 */
 	static boolean divideArray(int[] nums) 
 	{
+		// are there enough numbers for 2 groups?
+		if (nums.length > 1)
+		{
+			int start = 1; // the start index of group2
+			int group1 = sum(0, start, nums, true);
+			int group2 = sum(start, start, nums, false);
+			// if a solution is found, we pass it up
+			return divideArray1( start, nums, group1, group2);
+		}
+
+		// cases of null array or length 1 array with a 0
+		if (nums.length == 0)
+			return true;
+		if (nums.length == 1 && nums[0] == 0)
+			return true;
+		
+		// no solution found
+		return false;
 	}
 	
+	/**
+	 * 
+	 * @param start is the start index of group2
+	 * @param nums is an array of integers
+	 * @param group1 is the sum of the integers before the start index of group2
+	 * @param group2 is the sum of the integers at and beyond the start index of group 2
+	 * @return
+	 * 		true if a solution is found
+	 * 		false if no solution can be found
+	 */
 	static boolean divideArray1(int start, int[] nums, int group1, int group2)
 	{
+
+		// base case
+		if ( group1 == group2)
+			return true;
+		
+		// end of array (no values in group2)
+		if ( start == nums.length )
+			return false;
+		
+		// main route (take start val in group2 and place it in 1)
+		if ( divideArray1(start + 1, nums, group1+nums[start], group2-nums[start]) )
+			return true;
+		
+		// alternate route (try grabbing a different value)
+		if ( divideArray1(start + 1, nums, group1, group2) )
+			return true;
+		
+		// no solution found
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param i is the index of the current value being summed
+	 * @param start is the start index of group2
+	 * @param nums is an array of integers
+	 * @param group1 is a boolean value that is true when group1 is to be summed
+	 * 			and false when group2 is to be summed
+	 * @return the sum of the selected group
+	 */
+	static int sum(int i, int start, int[] nums, boolean group1)
+	{
+		// calculating group 1
+		if ( group1 )
+		{
+			// base case
+			if ( i == start )
+				return 0;
+			// build sum on way back up
+			else
+				return nums[i] + sum(i+1, start, nums, group1);
+		}
+		
+		// calculating group 2
+		else
+		{
+			// base case
+			if ( i == nums.length )
+				return 0;
+			// build sum on way back up
+			else 
+				return nums[i] + sum(i+1, start, nums, group1);
+		}
 	}
 	
 	//	Problem #7
@@ -344,10 +425,41 @@ public class CS2ProgrammingWeek4
 	 */
 	static boolean oddDivide10(int[] nums) 
 	{
+		// are there enough numbers for 2 groups?
+				if (nums.length > 1)
+				{
+					int start = 1; // the start index of group2
+					int group1 = sum(0, start, nums, true);
+					int group2 = sum(start, start, nums, false);
+					// if a solution is found, we pass it up
+					return oddDivide101( start, nums, group1, group2 );
+				}
+
+				// no solution found
+				else return false;
 	}
 	
 	static boolean oddDivide101(int start, int[] nums, int group1, int group2)
 	{
+		// base case
+		if ( group1 == 10 && group2 % 2 == 1 )
+			return true;
+		
+		// out of bounds
+		if ( start == nums.length )
+			return false;
+		
+		// main route
+		if ( oddDivide101(start+1, nums, group1 + nums[start], group2 - nums[start]) )
+			return true;
+		
+		// alternate route
+		if ( oddDivide101(start+1, nums, group1, group2) )
+			return true;
+		
+		// no solution found
+		return false;
+		
 	}
 	
 	//	Problem #8
@@ -372,10 +484,59 @@ public class CS2ProgrammingWeek4
 	 */
 	static boolean divide53(int[] nums) 
 	{
+		// are there enough numbers for 2 groups?
+		if (nums.length > 1)
+		{
+			int start = 1; // the start index of group2
+			int group1 = sum(0, start, nums, true);
+			int group2 = sum(start, start, nums, false);
+			// if a solution is found, we pass it up
+			return divide531( start, nums, group1, group2);
+		}
+
+		// cases of null array or length 1 array with a 0
+		if (nums.length == 0)
+			return true;
+		if (nums.length == 1 && nums[0] == 0)
+			return true;
+		
+		// no solution found
+		return false;
 	}
 	
 	static boolean divide531(int start, int[] nums, int group5s, int group3s)
 	{
+		// base case
+		if ( group5s == group3s )
+			return true;
+		
+		// out of bounds
+		if ( start >= nums.length )
+			return false;
+		
+		// if the value is a mult of 5
+		if ( nums[start] % 5 == 0 )
+			// it must go in group5s
+			if ( divide531(start+1 , nums, group5s + nums[start], group3s) )
+				return true;
+		
+		// if the value is a mult of 3 and not also a mult of 5
+		if ( nums[start] % 3 == 0 )
+			// it must go in group3s
+			if( divide531(start+1, nums, group5s, group3s + nums[start]) )
+				return true;
+		
+		// if the value is not a mult of 3 or 5
+		// main path
+		if ( divide531(start+1, nums, group5s+nums[start], group3s-nums[start]) )
+			return true;
+		
+		// alternate path
+		if ( divide531(start+1, nums, group5s, group3s)	)
+			return true;
+		
+		// no solution found
+		return false;
 	}
 	
 	///////////////////////////////////////////
@@ -386,6 +547,89 @@ public class CS2ProgrammingWeek4
 	
 	public static void main(String[] args)
 	{
+		
+		//	groupSumsTarget(0, {2, 4, 8}, 10) → true
+		int[] array01 = {2,4,8};
+		assert groupSumsTarget(0, array01, 10) == true;
+		//	groupSumsTarget(0, {2, 4, 8}, 14) → true
+		int[] array02 = {2,4,8};
+		assert groupSumsTarget(0, array02, 14) == true;
+		//	groupSumsTarget(0, {2, 4, 8}, 9) → false
+		int[] array03 = {2,4,8};
+		assert groupSumsTarget(0, array03, 9) == false;		
+		
+		//	groupSumsTarget6(0, {5, 6, 2}, 8) → true
+		int[] array04 = {5,6,2};
+		assert groupSumsTarget6(0, array04, 8) == true;
+		//	groupSumsTarget6(0, {5, 6, 2}, 9) → false
+		int[] array05 = {5,6,2};
+		assert groupSumsTarget6(0, array05, 9) == false;
+		//	groupSumsTarget6(0, {5, 6, 2}, 7) → false
+		int[] array06 = {5,6,2};
+		assert groupSumsTarget6(0, array06, 7) == false;
+
+		
+		//	groupSumsTargetNoAdj(0, {2, 5, 10, 4}, 12) → true
+		int[] array07 = {2,5,10,4};
+		assert groupSumsTargetNoAdj(0, array07, 12) == true;
+		//	groupSumsTargetNoAdj(0, {2, 5, 10, 4}, 14) → false
+		int[] array08 = {2,5,10,4};
+		assert groupSumsTargetNoAdj(0, array08, 14) == false;
+		//	groupSumsTargetNoAdj(0, {2, 5, 10, 4}, 7) → false
+		int[] array09 = {2,5,10,4};
+		assert groupSumsTargetNoAdj(0, array09, 7) == false;
+
+		
+		//	groupSumsTarget5(0, {2, 5, 10, 4}, 19) → true
+		int[] array10 = {2,5,10,4};
+		assert groupSumsTarget5(0, array10, 19) == true;
+		//	groupSumsTarget5(0, {2, 5, 10, 4}, 17) → true
+		int[] array11 = {2,5,10,4};
+		assert groupSumsTarget5(0, array11, 17) == true;
+		//	groupSumsTarget5(0, {2, 5, 10, 4}, 12) → false
+		int[] array12 = {2,5,10,4};
+		assert groupSumsTarget5(0, array12, 12) == false;
+		
+		//	groupSumsTargetClump(0, {2, 4, 8}, 10) → true
+		int[] array13 = {2,4,8};
+		assert groupSumsTargetClump(0, array13, 10) == true;
+		//	groupSumsTargetClump(0, {1, 2, 4, 8, 1}, 14) → true
+		int[] array14 = {1,2,4,8,1};
+		assert groupSumsTargetClump(0, array14, 14) == true;
+		//	groupSumsTargetClump(0, {2, 4, 4, 8}, 14) → false	
+		int[] array15 = {2,4,4,8};
+		assert groupSumsTargetClump(0, array15, 14) == false;
+		
+		//	divideArray({2, 2}) → true
+		int[] array16 = {2,2};
+		assert divideArray(array16) == true;
+		//	divideArray({2, 3}) → false
+		int[] array17 = {2,3};
+		assert divideArray(array17) == false;
+		//	divideArray({5, 2, 3}) → true
+		int[] array18 = {5,2,3};
+		assert divideArray(array18) == true;
+		
+		//	oddDivide10({5, 5, 5}) → true
+		int[] array19 = {5,5,5};
+		assert oddDivide10(array19) == true;
+		//	oddDivide10({5, 5, 6}) → false
+		int[] array20 = {5,5,6};
+		assert oddDivide10(array20) == false;
+		//	oddDivide10({5, 5, 6, 1}) → true
+		int[] array21 = {5,5,6,1};
+		assert oddDivide10(array21) == true;
+
+		//	divide53({1,1}) → true
+		int[] array22 = {1,1};
+		assert divide53(array22) == true;
+		//	divide53({1, 1, 1}) → false
+		int[] array23 = {1,1,1};
+		assert divide53(array23) == false;
+		//	divide53({2, 4, 2}) → true
+		int[] array24 = {2,4,2};
+		assert divide53(array24) == true;
+		
 	}
 	
 }
