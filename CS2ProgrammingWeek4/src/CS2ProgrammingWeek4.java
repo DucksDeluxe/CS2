@@ -171,11 +171,11 @@ public class CS2ProgrammingWeek4
 			return false;
 		
 		// main path
-		else if ( groupSumsTarget(start+2, nums, target-nums[start]) )
+		else if ( groupSumsTargetNoAdj(start+2, nums, target-nums[start]) )
 			return true;
 		
 		// alternate path
-		else if ( groupSumsTargetNoAdj(start+2, nums, target) )
+		else if ( groupSumsTargetNoAdj(start+1, nums, target) )
 			return true;
 		
 		// no solution found
@@ -215,14 +215,33 @@ public class CS2ProgrammingWeek4
 		else if ( start == nums.length )
 			return false;
 		
-		// main path
-		else if ( groupSumsTarget5(start+1, nums, target-nums[start]) )
-			return true;
-					
-		// if the nums[start] is a multiple of 5, there is no alternate
-		else if ( nums[start] % 5 != 0 )
+		
+		// mult of 5 and next is 1 then we need to skip it.
+		else if (nums[start] % 5 == 0 && nums[start+1] == 1)
+		{
+			if (groupSumsTarget5(start+2, nums, target-nums[start]))
+				return true;
+		}
+		
+		// mult of 5 and next is not 1 then we can consider next val
+		else if (nums[start] % 5 == 0 && nums[start+1] != 1)
+		{
+			if ( groupSumsTarget5(start+1, nums, target-nums[start]) )
+				return true;
+		}
+		
+		// main route for non mult of 5
+		if (nums[start] % 5 != 0)
+		{
+			if ( groupSumsTarget5(start+1, nums, target-nums[start]) )
+				return true;
+		}
+		// alternate route for non mult of 5
+		if ( nums[start] % 5 != 0 )
+		{
 			if ( groupSumsTarget5(start+1, nums, target) )
 				return true;
+		}
 		
 		// no solution found
 		return false;
@@ -266,10 +285,14 @@ public class CS2ProgrammingWeek4
 		
 		// check for clump
 		for ( int i = start; i+1 < nums.length; i++ )
+		{
 			// current val = next val?
 			if  (nums[i] == nums[i+1] )
 				// count the matching val in the clump
 				nClump++;
+			else
+				break;
+		}
 		
 		// if we are at the start of a clump,
 		if ( nClump > 1 )
@@ -306,70 +329,6 @@ public class CS2ProgrammingWeek4
 	
 	/**
 	 * 
-	 * @param nums
-	 * 		int[] nums is the given array
-	 * 
-	 * @return 
-	 * 		returns true if the array can be divided so that the constraints are met
-	 * 		returns false if the array cannot be divided so that the constraints are met
-	 */
-	static boolean divideArray(int[] nums) 
-	{
-		// are there enough numbers for 2 groups?
-		if (nums.length > 1)
-		{
-			int start = 1; // the start index of group2
-			int group1 = sum(0, start, nums, true);
-			int group2 = sum(start, start, nums, false);
-			// if a solution is found, we pass it up
-			return divideArray1( start, nums, group1, group2);
-		}
-
-		// cases of null array or length 1 array with a 0
-		if (nums.length == 0)
-			return true;
-		if (nums.length == 1 && nums[0] == 0)
-			return true;
-		
-		// no solution found
-		return false;
-	}
-	
-	/**
-	 * 
-	 * @param start is the start index of group2
-	 * @param nums is an array of integers
-	 * @param group1 is the sum of the integers before the start index of group2
-	 * @param group2 is the sum of the integers at and beyond the start index of group 2
-	 * @return
-	 * 		true if a solution is found
-	 * 		false if no solution can be found
-	 */
-	static boolean divideArray1(int start, int[] nums, int group1, int group2)
-	{
-
-		// base case
-		if ( group1 == group2)
-			return true;
-		
-		// end of array (no values in group2)
-		if ( start == nums.length )
-			return false;
-		
-		// main route (take start val in group2 and place it in 1)
-		if ( divideArray1(start + 1, nums, group1+nums[start], group2-nums[start]) )
-			return true;
-		
-		// alternate route (try grabbing a different value)
-		if ( divideArray1(start + 1, nums, group1, group2) )
-			return true;
-		
-		// no solution found
-		return false;
-	}
-	
-	/**
-	 * 
 	 * @param i is the index of the current value being summed
 	 * @param start is the start index of group2
 	 * @param nums is an array of integers
@@ -402,6 +361,81 @@ public class CS2ProgrammingWeek4
 		}
 	}
 	
+	//	Problem #6
+	//	Given an array of ints, is it possible to divide the ints into two 
+	//	groups, so that the sums of the two groups are the same. Every int must 
+	//	be in one group or the other. Write a recursive helper method that takes 
+	//	whatever arguments you like, and make the initial call to your recursive 
+	//	helper from splitArray(). (No loops needed.)    
+	
+	//	divideArray({2, 2}) → true
+	//	divideArray({2, 3}) → false
+	//	divideArray({5, 2, 3}) → true
+	
+	/**
+	 * 
+	 * @param nums
+	 * 		int[] nums is the given array
+	 * 
+	 * @return 
+	 * 		returns true if the array can be divided so that the constraints are met
+	 * 		returns false if the array cannot be divided so that the constraints are met
+	 */
+	static boolean divideArray(int[] nums) 
+	{
+		// are there enough numbers for 2 groups?
+		if (nums.length > 1)
+		{
+			int start = 1; // the start index of group2
+			int group1 = sum(0, start, nums, true);
+			int group2 = sum(start, start, nums, false);
+			// if a solution is found, we pass it up
+			return divideArray1( start, nums, group1, group2);
+		}
+	
+		// cases of null array or length 1 array with a 0
+		if (nums.length == 0)
+			return true;
+		if (nums.length == 1 && nums[0] == 0)
+			return true;
+		
+		// no solution found
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param start is the start index of group2
+	 * @param nums is an array of integers
+	 * @param group1 is the sum of the integers before the start index of group2
+	 * @param group2 is the sum of the integers at and beyond the start index of group 2
+	 * @return
+	 * 		true if a solution is found
+	 * 		false if no solution can be found
+	 */
+	static boolean divideArray1(int start, int[] nums, int group1, int group2)
+	{
+	
+		// base case
+		if ( group1 == group2)
+			return true;
+		
+		// end of array (no values in group2)
+		if ( start == nums.length )
+			return false;
+		
+		// main route (take start val in group2 and place it in 1)
+		if ( divideArray1(start + 1, nums, group1+nums[start], group2-nums[start]) )
+			return true;
+		
+		// alternate route (try grabbing a different value)
+		if ( divideArray1(start + 1, nums, group1, group2) )
+			return true;
+		
+		// no solution found
+		return false;
+	}
+
 	//	Problem #7
 	//	Given an array of ints, is it possible to divide the ints into two groups, 
 	//	so that the sum of one group is a multiple of 10, and the sum of the 
@@ -428,9 +462,9 @@ public class CS2ProgrammingWeek4
 		// are there enough numbers for 2 groups?
 				if (nums.length > 1)
 				{
-					int start = 1; // the start index of group2
-					int group1 = sum(0, start, nums, true);
-					int group2 = sum(start, start, nums, false);
+					int start = 0; // the start index of group2
+					int group1 = 0; // start with nothing in group 1
+					int group2 = sum(start, start, nums, false); // put everything in group 2
 					// if a solution is found, we pass it up
 					return oddDivide101( start, nums, group1, group2 );
 				}
@@ -442,7 +476,10 @@ public class CS2ProgrammingWeek4
 	static boolean oddDivide101(int start, int[] nums, int group1, int group2)
 	{
 		// base case
-		if ( group1 == 10 && group2 % 2 == 1 )
+		if ( group1 % 10 == 0 && group2 % 2 == 1 && start == nums.length )
+			return true;
+		// kinda pointless, but who cares.
+		if ( group1 % 2 == 1 && group2 % 10 == 0 && start == nums.length )
 			return true;
 		
 		// out of bounds
@@ -487,9 +524,9 @@ public class CS2ProgrammingWeek4
 		// are there enough numbers for 2 groups?
 		if (nums.length > 1)
 		{
-			int start = 1; // the start index of group2
-			int group1 = sum(0, start, nums, true);
-			int group2 = sum(start, start, nums, false);
+			int start = 0; // the start index of group2
+			int group1 = 0; // start with group1 empty
+			int group2 = sum(start, start, nums, false);	// everything starts in group 2
 			// if a solution is found, we pass it up
 			return divide531( start, nums, group1, group2);
 		}
@@ -507,7 +544,7 @@ public class CS2ProgrammingWeek4
 	static boolean divide531(int start, int[] nums, int group5s, int group3s)
 	{
 		// base case
-		if ( group5s == group3s )
+		if ( group5s == group3s && start == nums.length)
 			return true;
 		
 		// out of bounds
@@ -516,24 +553,30 @@ public class CS2ProgrammingWeek4
 		
 		// if the value is a mult of 5
 		if ( nums[start] % 5 == 0 )
+		{
 			// it must go in group5s
-			if ( divide531(start+1 , nums, group5s + nums[start], group3s) )
+			if ( divide531(start+1 , nums, group5s + nums[start], group3s - nums[start]) )
 				return true;
-		
+		}
 		// if the value is a mult of 3 and not also a mult of 5
-		if ( nums[start] % 3 == 0 )
-			// it must go in group3s
-			if( divide531(start+1, nums, group5s, group3s + nums[start]) )
+		else if ( nums[start] % 3 == 0 )
+		{
+			// it's already in group3s
+			if( divide531(start+1, nums, group5s, group3s) )
 				return true;
+		}	
 		
 		// if the value is not a mult of 3 or 5
-		// main path
-		if ( divide531(start+1, nums, group5s+nums[start], group3s-nums[start]) )
+		if ( nums[start] % 5 != 0 && nums[start] % 3 != 0 )
+		{
+			// main path
+			if ( divide531(start+1, nums, group5s+nums[start], group3s-nums[start]) )
 			return true;
 		
-		// alternate path
-		if ( divide531(start+1, nums, group5s, group3s)	)
-			return true;
+			// alternate path
+			if ( divide531(start+1, nums, group5s, group3s)	)
+				return true;
+		}
 		
 		// no solution found
 		return false;
@@ -547,6 +590,7 @@ public class CS2ProgrammingWeek4
 	
 	public static void main(String[] args)
 	{
+		int[] nullArray = {};
 		
 		//	groupSumsTarget(0, {2, 4, 8}, 10) → true
 		int[] array01 = {2,4,8};
@@ -557,6 +601,10 @@ public class CS2ProgrammingWeek4
 		//	groupSumsTarget(0, {2, 4, 8}, 9) → false
 		int[] array03 = {2,4,8};
 		assert groupSumsTarget(0, array03, 9) == false;		
+		// null array,0 == true
+		assert groupSumsTarget(0,nullArray, 0) == true;
+		int[] array025 = {0,3,5,1,9,7,6,3,8};
+		assert groupSumsTarget(0,array025, 18) == true;
 		
 		//	groupSumsTarget6(0, {5, 6, 2}, 8) → true
 		int[] array04 = {5,6,2};
@@ -567,7 +615,11 @@ public class CS2ProgrammingWeek4
 		//	groupSumsTarget6(0, {5, 6, 2}, 7) → false
 		int[] array06 = {5,6,2};
 		assert groupSumsTarget6(0, array06, 7) == false;
-
+		// null array,0 == true
+		assert groupSumsTarget6(0,nullArray, 0) == true;
+		int[] array26 = {1,2,3,4};
+		assert groupSumsTarget6(0, array26, 4) == true;
+		
 		
 		//	groupSumsTargetNoAdj(0, {2, 5, 10, 4}, 12) → true
 		int[] array07 = {2,5,10,4};
@@ -594,8 +646,8 @@ public class CS2ProgrammingWeek4
 		int[] array13 = {2,4,8};
 		assert groupSumsTargetClump(0, array13, 10) == true;
 		//	groupSumsTargetClump(0, {1, 2, 4, 8, 1}, 14) → true
-		int[] array14 = {1,2,4,8,1};
-		assert groupSumsTargetClump(0, array14, 14) == true;
+		int[] array14 = {1,4,4,8,1};
+		assert groupSumsTargetClump(0, array14, 16) == true;
 		//	groupSumsTargetClump(0, {2, 4, 4, 8}, 14) → false	
 		int[] array15 = {2,4,4,8};
 		assert groupSumsTargetClump(0, array15, 14) == false;
@@ -631,5 +683,4 @@ public class CS2ProgrammingWeek4
 		assert divide53(array24) == true;
 		
 	}
-	
 }
