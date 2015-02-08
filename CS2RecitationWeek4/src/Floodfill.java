@@ -37,6 +37,7 @@ public class Floodfill extends Applet implements MouseListener
 	{
 		addMouseListener(this);
 		setSize(1020,700);
+		setBackground(Color.lightGray);
        
 		try 
 		{
@@ -79,6 +80,7 @@ public class Floodfill extends Applet implements MouseListener
 	@Override
 	public void mouseClicked(MouseEvent ms) 
 	{
+		
 		if( ms.getX() >= m_nUpperLeftX &&
 			ms.getY() >= m_nUpperLeftY &&
 			ms.getX() < m_nLowerRightX &&
@@ -97,13 +99,21 @@ public class Floodfill extends Applet implements MouseListener
 		{
 			// we can even change borders!
 			targetColor = GetPixel(ms.getX()-100, ms.getY()-100);
-			DoFloodFill( ms.getX()-100, ms.getY()-100);
+			DoFloodFill( ms.getX() - m_nTestShapeX, ms.getY()- m_nTestShapeY);
 		}
+		else
+			this.setBackground(m_objSelectedColor);
 	}
 
 	private void DoFloodFill(int x, int y) 
 	{
+		if (y < 0 || y > m_objShape.getHeight()-1)
+			return;
+		
 		if (targetColor == m_objSelectedColor.getRGB())
+			return;
+		
+		if (m_objSelectedColor.getRGB() == GetPixel(x, y))
 			return;
 		
 		int left = x;
@@ -113,6 +123,8 @@ public class Floodfill extends Applet implements MouseListener
 			// change the current pixel 
 			SetPixel(left, y, m_objSelectedColor.getRGB());
 			left--;
+			if (left < 0)
+				break;
 		}
 		
 		int right = x+1;
@@ -122,6 +134,8 @@ public class Floodfill extends Applet implements MouseListener
 			// change the current pixel
 			SetPixel(right, y, m_objSelectedColor.getRGB());
 			right++;
+			if (right > m_objShape.getWidth()-1)
+				break;
 		}
 		
 		for (left += 1; left < right ; left++)
@@ -129,7 +143,7 @@ public class Floodfill extends Applet implements MouseListener
 			DoFloodFill(left,y+1);
 			DoFloodFill(left,y-1);
 		}
-		return;
+		repaint();
 	}
 
 	void DrawTestShape( Graphics canvas )
