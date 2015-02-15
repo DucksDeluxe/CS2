@@ -11,6 +11,9 @@ public class DataObject
 	
 	public String GetKey() 
 	{
-		return( m_strKey );
+		if (m_strKey == null)
+			return null;
+		else
+			return( m_strKey );
 	}
 }
