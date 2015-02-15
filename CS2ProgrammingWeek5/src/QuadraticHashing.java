@@ -1,7 +1,9 @@
+import java.math.BigInteger;
+
 
 public class QuadraticHashing
 {
-	int m_nTableSize = 1000;
+	int m_nTableSize = 1009;
 	DataObject[] m_ObjectArray;
 	
 	public QuadraticHashing()
@@ -15,6 +17,12 @@ public class QuadraticHashing
 		m_ObjectArray = new DataObject[m_nTableSize];
 	}
 	
+	
+	/**
+	 * 
+	 * @param strKey
+	 * @param objData
+	 */
 	public void put( String strKey, DataObject objData )
 	{
 		// track the number of items in the list
@@ -30,8 +38,8 @@ public class QuadraticHashing
 				count++;
 		}
 		
-		// table more than half full?
-		if ( 2*count > m_nTableSize )
+		// table at or more than half full?
+		if ( 2*count >= m_nTableSize )
 		{
 			// resize and rehash
 			
@@ -40,7 +48,9 @@ public class QuadraticHashing
 			
 			// create new table
 			m_nTableSize += m_nTableSize;
+			m_nTableSize = Utility.NextPrime(m_nTableSize);
 			m_ObjectArray = new DataObject[m_nTableSize];
+
 			
 			// rehash entire table
 			for ( int i=0; i<m_OldObjectArray.length; i++ )
@@ -56,13 +66,17 @@ public class QuadraticHashing
 		// create hash for the passed DataObject based on its strKey
 		long lHash = Utility.HashFromString(strKey) % m_nTableSize;
 		
-		// find next empty slot
-		// this provides built in collision handling
+		int i = 1;
+		// quadratically probe
 		while( m_ObjectArray[(int)(lHash%m_nTableSize)] != null)
 		{
-			// don't wrap yet
+			// no duplicates allowed
+			if (m_ObjectArray[(int)lHash].m_strKey == objData.m_strKey)
+				return;
+			// need to wrap?
 			if ( lHash < m_nTableSize )
-				lHash++;
+				// quadratic increment
+				lHash = (lHash + i * i++);
 			// wrap at end of table
 			if ( lHash >= m_nTableSize )
 				lHash = 0;				
@@ -71,6 +85,9 @@ public class QuadraticHashing
 		// stick the objData at the open spot
 		m_ObjectArray[(int)lHash] = objData;
 	}
+	
+
+
 /**
  * 
  * @param strKey
@@ -78,6 +95,7 @@ public class QuadraticHashing
  */
 	public DataObject get( String strKey )
 	{
+		int i = 1;
 		long lHash = Utility.HashFromString(strKey) % m_nTableSize;
 		
 		// track start
@@ -88,7 +106,8 @@ public class QuadraticHashing
 		{
 			// don't wrap yet
 			if ( lHash < m_nTableSize )
-				lHash++;
+				// quadratic increment
+				lHash = (lHash + i * i++);
 			// wrap at end of table
 			else if ( lHash >= m_nTableSize - 1 )
 				lHash = 0;
