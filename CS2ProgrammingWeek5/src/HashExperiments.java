@@ -23,7 +23,7 @@ public class HashExperiments
 		
 		///////////////////////////////////////////////////////////////////////////
 		// LINEAR HASHTABLE
-		/*
+		///*
 		LinearHash lh = new LinearHash();
 		
 		for( int i=0; i<Lists.ListOne.length; i++)
@@ -41,7 +41,7 @@ public class HashExperiments
 			}
 		}
 		System.out.println("The count is: " + count);
-		*/
+		//*/
 		///////////////////////////////////////////////////////////////////////////
 
 		

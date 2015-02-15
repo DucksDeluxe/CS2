@@ -1,7 +1,7 @@
 
 public class LinearHash 
 {
-	int m_nTableSize = 1;
+	int m_nTableSize = 1000;
 	DataObject[] m_ObjectArray;
 	
 	public LinearHash()
@@ -60,6 +60,9 @@ public class LinearHash
 		// this provides built in collision handling
 		while( m_ObjectArray[(int)(lHash%m_nTableSize)] != null)
 		{
+			// no duplicates allowed
+			if (m_ObjectArray[(int)lHash].m_strKey == objData.m_strKey)
+				return;
 			// don't wrap yet
 			if ( lHash < m_nTableSize )
 				lHash++;
