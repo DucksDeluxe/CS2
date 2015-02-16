@@ -1,5 +1,3 @@
-import java.math.BigInteger;
-
 
 public class QuadraticHashing
 {
@@ -48,7 +46,7 @@ public class QuadraticHashing
 			
 			// create new table
 			m_nTableSize += m_nTableSize;
-			m_nTableSize = Utility.NextPrime(m_nTableSize);
+			m_nTableSize = NextPrime(m_nTableSize);
 			m_ObjectArray = new DataObject[m_nTableSize];
 
 			
@@ -119,5 +117,27 @@ public class QuadraticHashing
 		}
 
 		return( m_ObjectArray[(int)(lHashIndex)] );
+	}
+	
+	public static int NextPrime(int nEval) {
+		boolean isPrime = true;
+		
+		// is this value prime?
+		for ( int i=2; i<=nEval/2; i++)
+		{
+			if ( nEval % i == 0 )
+			{
+				isPrime = false;
+				break;
+			}
+		}
+		
+		// if not prime, how about the next?
+		if (!isPrime)
+			return NextPrime(nEval + 1);
+		
+		// found prime!
+		else
+			return nEval;
 	}
 }
