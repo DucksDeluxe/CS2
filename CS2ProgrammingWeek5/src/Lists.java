@@ -571,10 +571,15 @@ public class Lists
 			"Brice",
 			"Coleman",
 			"Aydan",
-			"Ean",
+			"Ean"
+	};
+	
+	static String ListTwo[] =
+		{
 			"Quintin",
-			"Semaj",
-			"Harlan",
+			"Semaj"
+	};
+/*			"Harlan",
 			"Vaughn",
 			"Axton",
 			"Damion",
@@ -1338,5 +1343,6 @@ public class Lists
 			"Kenna",
 			"Tinley",
 			"Collins"
-	};
+	}; 
+	*/
 }

@@ -1,6 +1,7 @@
 
 public class LinearHash 
 {
+
 	int m_nTableSize = 1000;
 	DataObject[] m_ObjectArray;
 	
@@ -20,8 +21,7 @@ public class LinearHash
 		// track the number of items in the list
 		int count = 0;
 		
-		// count how many items are in the list
-		// let's count every time we put, just for safety
+		// count how many items are in the list (I realize this is super inefficient)
  		for ( int i=0; i<m_nTableSize; i++ )
 		{
 			// is there an object here?
@@ -54,25 +54,25 @@ public class LinearHash
 		}
 			
 		// create hash for the passed DataObject based on its strKey
-		long lHash = Utility.HashFromString(strKey) % m_nTableSize;
+		long lHashIndex = Utility.HashFromString(strKey) % m_nTableSize;
 		
 		// find next empty slot
 		// this provides built in collision handling
-		while( m_ObjectArray[(int)(lHash%m_nTableSize)] != null)
+		while( m_ObjectArray[(int)(lHashIndex)] != null)
 		{
 			// no duplicates allowed
-			if (m_ObjectArray[(int)lHash].m_strKey == objData.m_strKey)
+			if (m_ObjectArray[(int)lHashIndex].m_strKey == objData.m_strKey)
 				return;
 			// don't wrap yet
-			if ( lHash < m_nTableSize )
-				lHash++;
+			if ( lHashIndex < m_nTableSize )
+				lHashIndex++;
 			// wrap at end of table
-			if ( lHash >= m_nTableSize )
-				lHash = 0;				
+			if ( lHashIndex >= m_nTableSize )
+				lHashIndex = 0;				
 		}
 		
 		// stick the objData at the open spot
-		m_ObjectArray[(int)lHash] = objData;
+		m_ObjectArray[(int)lHashIndex] = objData;
 	}
 /**
  * 
@@ -81,26 +81,26 @@ public class LinearHash
  */
 	public DataObject get( String strKey )
 	{
-		long lHash = Utility.HashFromString(strKey) % m_nTableSize;
+		long lHashIndex = Utility.HashFromString(strKey) % m_nTableSize;
 		
 		// track start
-		long lStart = lHash;
+		long lStart = lHashIndex;
 		
-		while( m_ObjectArray[(int)(lHash%m_nTableSize)] == null
-				|| m_ObjectArray[(int)(lHash%m_nTableSize)].GetKey() != strKey )
+		while( m_ObjectArray[(int)(lHashIndex)] == null
+				|| m_ObjectArray[(int)(lHashIndex)].GetKey() != strKey )
 		{
 			// don't wrap yet
-			if ( lHash < m_nTableSize )
-				lHash++;
+			if ( lHashIndex < m_nTableSize )
+				lHashIndex++;
 			// wrap at end of table
-			else if ( lHash >= m_nTableSize - 1 )
-				lHash = 0;
+			if ( lHashIndex >= m_nTableSize )
+				lHashIndex = 0;
 			
 			// hash not found
-			if ( lHash == lStart )
+			if ( lHashIndex == lStart )
 				return null;
 		}
 
-		return( m_ObjectArray[(int)(lHash%m_nTableSize)] );
+		return( m_ObjectArray[(int)(lHashIndex)] );
 	}
 }

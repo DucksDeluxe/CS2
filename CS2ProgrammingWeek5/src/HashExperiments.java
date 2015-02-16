@@ -1,4 +1,6 @@
+import java.io.IOException;
 import java.util.Hashtable;
+import java.util.LinkedList;
 
 
 public class HashExperiments 
@@ -32,6 +34,8 @@ public class HashExperiments
 		}
 		
 		int count = 0;
+		
+		
 		for ( int i=0; i<lh.m_nTableSize; i++)
 		{
 			if ( lh.m_ObjectArray[i] != null )
@@ -41,7 +45,23 @@ public class HashExperiments
 			}
 		}
 		System.out.println("The count is: " + count);
-		*/
+		
+		
+		DataObject objData;
+		try
+		{
+			objData = lh.get("Justin");
+			if (objData != null)
+				System.out.println(objData.GetKey());
+			else
+				System.out.println("null");
+		}
+		catch (Exception e)
+		{
+			System.err.println(e.getMessage());
+		}
+		
+		/**/
 		///////////////////////////////////////////////////////////////////////////
 		
 		///////////////////////////////////////////////////////////////////////////
@@ -64,8 +84,68 @@ public class HashExperiments
 		}
 		}
 		System.out.println("The count is: " + count);
-		*/
+		
+		DataObject objData;
+		try
+		{
+			objData = qh.get("Justin");
+			if (objData != null)
+				System.out.println(objData.GetKey());
+			else
+				System.out.println("null");
+		}
+		catch (Exception e)
+		{
+			System.err.println(e.getMessage());
+		}
+		/**/
 		///////////////////////////////////////////////////////////////////////////
+		
+		///////////////////////////////////////////////////////////////////////////
+		// SEPARATE CHAINING
+		///*
+		SeparateChaining sc = new SeparateChaining();
+		
+		for( int i=0; i<Lists.ListOne.length; i++)
+		{
+		sc.put( Lists.ListOne[i], new DataObject( Lists.ListOne[i] ) );
+		}
+		
+		sc.put( Lists.ListTwo[0], new DataObject(Lists.ListTwo[0]));
+		sc.put( Lists.ListTwo[1], new DataObject(Lists.ListTwo[1]));
+		
+		/*
+		int count = 0;
+		for ( int i=0; i<sc.m_lists.length; i++)
+		{
+			
+		if ( sc.m_lists[i] != null )
+		{
+		System.out.println(sc.m_lists[i].iterator());
+		count++;
+		}
+		}
+		System.out.println("The count is: " + count);
+		/**/
+		
+		/*
+		DataObject objData;
+		try
+		{
+		objData = sc.get("Justin");
+		if (objData != null)
+		System.out.println(objData.GetKey());
+		else
+		System.out.println("null");
+		}
+		catch (Exception e)
+		{
+		System.err.println(e.getMessage());
+		}
+		/**/
+		///////////////////////////////////////////////////////////////////////////
+				
+		System.out.println(sc.get_m_nTableSize());
 		
 		long end = System.currentTimeMillis();
 		// Print out the time it took.

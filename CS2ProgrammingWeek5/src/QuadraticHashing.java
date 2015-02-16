@@ -64,26 +64,26 @@ public class QuadraticHashing
 		}
 			
 		// create hash for the passed DataObject based on its strKey
-		long lHash = Utility.HashFromString(strKey) % m_nTableSize;
+		long lHashIndex = Utility.HashFromString(strKey) % m_nTableSize;
 		
 		int i = 1;
 		// quadratically probe
-		while( m_ObjectArray[(int)(lHash%m_nTableSize)] != null)
+		while( m_ObjectArray[(int)(lHashIndex)] != null)
 		{
 			// no duplicates allowed
-			if (m_ObjectArray[(int)lHash].m_strKey == objData.m_strKey)
+			if (m_ObjectArray[(int)lHashIndex].m_strKey == objData.m_strKey)
 				return;
 			// need to wrap?
-			if ( lHash < m_nTableSize )
+			if ( lHashIndex < m_nTableSize )
 				// quadratic increment
-				lHash = (lHash + i * i++);
+				lHashIndex = (lHashIndex + i * i++);
 			// wrap at end of table
-			if ( lHash >= m_nTableSize )
-				lHash = 0;				
+			if ( lHashIndex >= m_nTableSize )
+				lHashIndex = 0;				
 		}
 		
 		// stick the objData at the open spot
-		m_ObjectArray[(int)lHash] = objData;
+		m_ObjectArray[(int)lHashIndex] = objData;
 	}
 	
 
@@ -95,28 +95,29 @@ public class QuadraticHashing
  */
 	public DataObject get( String strKey )
 	{
-		int i = 1;
-		long lHash = Utility.HashFromString(strKey) % m_nTableSize;
+		
+		long lHashIndex = Utility.HashFromString(strKey) % m_nTableSize;
 		
 		// track start
-		long lStart = lHash;
+		long lStart = lHashIndex;
 		
-		while( m_ObjectArray[(int)(lHash%m_nTableSize)] == null
-				|| m_ObjectArray[(int)(lHash%m_nTableSize)].GetKey() != strKey )
+		int i = 1;
+		while( m_ObjectArray[(int)(lHashIndex)] == null
+				|| m_ObjectArray[(int)(lHashIndex)].GetKey() != strKey )
 		{
 			// don't wrap yet
-			if ( lHash < m_nTableSize )
+			if ( lHashIndex < m_nTableSize )
 				// quadratic increment
-				lHash = (lHash + i * i++);
+				lHashIndex = (lHashIndex + i * i++) % m_nTableSize;
 			// wrap at end of table
-			else if ( lHash >= m_nTableSize - 1 )
-				lHash = 0;
+			if ( lHashIndex >= m_nTableSize )
+				lHashIndex = (0 + i * i++) % m_nTableSize;
 			
 			// hash not found
-			if ( lHash == lStart )
+			if ( lHashIndex == lStart )
 				return null;
 		}
 
-		return( m_ObjectArray[(int)(lHash%m_nTableSize)] );
+		return( m_ObjectArray[(int)(lHashIndex)] );
 	}
 }
