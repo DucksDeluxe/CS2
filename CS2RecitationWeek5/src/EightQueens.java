@@ -121,6 +121,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 		CheckDiagonal1( g );
 		CheckDiagonal2( g );
 		bufferGraphics.setColor( Color.BLUE );
+//TODO change to buffer
 		g.drawString( m_strStatus, BOARDLEFT, BOARDTOP * 8 + 20 );
 
 		g.drawImage(offScreen,0,0,this);
