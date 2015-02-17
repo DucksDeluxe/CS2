@@ -1,6 +1,7 @@
 import java.applet.Applet;
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
@@ -13,6 +14,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+
+//TODO add and set status string
+//TODO set queen
 public class EightQueens extends Applet implements MouseListener, MouseMotionListener, Runnable, ActionListener
 {
 	private static final long serialVersionUID = 1L;
@@ -29,7 +33,16 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 	boolean m_bClash = false;
 	Button m_btnSolve = new Button("Solve");
 	boolean m_bSolving = false;
-	int m_nSleepTime = 200;
+	int m_nSleepTime = 3;
+	String m_strStatus = "";
+	String m_strSolving = "Solving";
+	String m_strSolved = "Solved!";
+	
+	//Double Buffering
+	Graphics bufferGraphics;
+	Image offScreen;
+	Dimension dim;
+	int curX, curY;
 	
 	/**
 	 * 
@@ -39,9 +52,14 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 		addMouseListener(this);
 		setSize(500, 500);
 		
+		
 		add(m_btnSolve);
 		m_btnSolve.addActionListener( this );
-						
+		
+		// buffering
+		dim = getSize();
+		offScreen = createImage(dim.width, dim.height);
+		bufferGraphics = offScreen.getGraphics();
 		try
 		{
 			m_imgLogo = ImageIO.read(EightQueens.class.getResourceAsStream(LOGO_DIRECTORY));					
@@ -60,8 +78,6 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 		{
 			System.out.println(e.toString());
 		}
-		
-		
 	}
 	
 	/**
@@ -80,6 +96,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 				}
 				m_bSolving = false;
 				m_btnSolve.setEnabled(true);
+				m_strStatus = m_strSolved;
 				
 				Thread.sleep(m_nSleepTime);
 			}
@@ -93,19 +110,20 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 	}
 
 	public void paint(Graphics g)
-	{
+	{	
 		String m_strStatus = "";
 		
 		//m_bClash = false;
 		DrawBoard( g );
-		g.setColor( Color.RED );
+		bufferGraphics.setColor( Color.RED );
 		CheckColumns( g );
 		CheckRows( g );
 		CheckDiagonal1( g );
 		CheckDiagonal2( g );
-		g.setColor( Color.BLUE );
-		
+		bufferGraphics.setColor( Color.BLUE );
 		g.drawString( m_strStatus, BOARDLEFT, BOARDTOP * 8 + 20 );
+
+		g.drawImage(offScreen,0,0,this);
 	}
 	
 	private boolean Solver(int nColumn) throws InterruptedException 
@@ -173,17 +191,36 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 
 	private void DrawBoard(Graphics g) 
 	{
-		g.setColor( Color.BLACK );
 		for (int i=0; i<NUMROWS; i++)
 		{
 			for (int j=0; j<NUMCOLUMNS; j++)
 			{	
-				g.drawRect(BOARDLEFT+j*SQUAREWIDTH, 
+				bufferGraphics.clearRect(BOARDLEFT+j*SQUAREWIDTH, 
 						BOARDTOP+i*SQUAREHEIGHT, SQUAREWIDTH, SQUAREHEIGHT);
 		
 				if( m_nBoard[i][j] != 0 )
 				{
-					g.drawImage( m_imgLogo,
+					bufferGraphics.drawImage( m_imgLogo,
+						BOARDLEFT + j * SQUAREWIDTH + 1, 
+						BOARDTOP + i * SQUAREHEIGHT + 1, 
+						null );
+				}
+			}
+		}
+		
+		
+		
+		bufferGraphics.setColor( Color.BLACK );
+		for (int i=0; i<NUMROWS; i++)
+		{
+			for (int j=0; j<NUMCOLUMNS; j++)
+			{	
+				bufferGraphics.drawRect(BOARDLEFT+j*SQUAREWIDTH, 
+						BOARDTOP+i*SQUAREHEIGHT, SQUAREWIDTH, SQUAREHEIGHT);
+		
+				if( m_nBoard[i][j] != 0 )
+				{
+					bufferGraphics.drawImage( m_imgLogo,
 						BOARDLEFT + j * SQUAREWIDTH + 1, 
 						BOARDTOP + i * SQUAREHEIGHT + 1, 
 						null );
@@ -205,7 +242,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 			}
 			if( nRowCount > 1 )
 			{
-				g.drawLine( BOARDLEFT + ( SQUAREWIDTH / 2 ),
+				bufferGraphics.drawLine( BOARDLEFT + ( SQUAREWIDTH / 2 ),
 					BOARDTOP + nRow * SQUAREHEIGHT + ( SQUAREHEIGHT / 2 ),	
 					BOARDLEFT + 7 * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
 					BOARDTOP + nRow * SQUAREHEIGHT + ( SQUAREHEIGHT / 2 ) );
@@ -230,7 +267,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 			}
 			if( nColCount > 1 )
 			{
-				g.drawLine( BOARDLEFT + nCol * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
+				bufferGraphics.drawLine( BOARDLEFT + nCol * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
 					BOARDTOP + ( SQUAREHEIGHT / 2 ),	
 					BOARDLEFT + nCol * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
 					BOARDTOP + SQUAREHEIGHT * 7 + ( SQUAREHEIGHT / 2 ) );
@@ -265,7 +302,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 				
 			if( nColCount > 1 )
 			{
-				g.drawLine( BOARDLEFT + nCol * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
+				bufferGraphics.drawLine( BOARDLEFT + nCol * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
 						BOARDTOP + nRow * SQUAREHEIGHT + ( SQUAREHEIGHT / 2 ),	
 						BOARDLEFT + ( nThisCol - 1 ) * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
 						BOARDTOP + ( nThisRow - 1 ) * SQUAREHEIGHT + ( SQUAREHEIGHT / 2 ) );
@@ -296,7 +333,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 				
 			if( nColCount > 1 )
 			{
-				g.drawLine( BOARDLEFT + nCol * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
+				bufferGraphics.drawLine( BOARDLEFT + nCol * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
 						BOARDTOP + nRow * SQUAREHEIGHT + ( SQUAREHEIGHT / 2 ),	
 						BOARDLEFT + ( nThisCol - 1 ) * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
 						BOARDTOP + ( nThisRow - 1 ) * SQUAREHEIGHT + ( SQUAREHEIGHT / 2 ) );
@@ -332,7 +369,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 				
 			if( nColCount > 1 )
 			{
-				g.drawLine( BOARDLEFT + nCol * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
+				bufferGraphics.drawLine( BOARDLEFT + nCol * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
 						BOARDTOP + nRow * SQUAREHEIGHT + ( SQUAREHEIGHT / 2 ),	
 						BOARDLEFT + ( nThisCol + 1 ) * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
 						BOARDTOP + ( nThisRow - 1 ) * SQUAREHEIGHT + ( SQUAREHEIGHT / 2 ) );
@@ -363,7 +400,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 				
 			if( nColCount > 1 )
 			{
-				g.drawLine( BOARDLEFT + nCol * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
+				bufferGraphics.drawLine( BOARDLEFT + nCol * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
 						BOARDTOP + nRow * SQUAREHEIGHT + ( SQUAREHEIGHT / 2 ),	
 						BOARDLEFT + ( nThisCol + 1 ) * SQUAREWIDTH + ( SQUAREWIDTH / 2 ),
 						BOARDTOP + ( nThisRow - 1 ) * SQUAREHEIGHT + ( SQUAREHEIGHT / 2 ) );
@@ -436,14 +473,16 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 	public void actionPerformed(ActionEvent e) {
 		m_btnSolve.setEnabled(false);
 		ClearBoard();
-		repaint();
 		m_bClash = false;
 		m_bSolving = true;
 		
 		Thread m_objThread = new Thread(this);
-		m_objThread.start();
-		
-		
+		m_objThread.start();		
 	}
 
+	public void update(Graphics g)
+	{
+		paint(g);
+	}
+	
 }
