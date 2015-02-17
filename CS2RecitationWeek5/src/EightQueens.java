@@ -6,7 +6,6 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -22,7 +21,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 	MediaTracker tracker = new MediaTracker(this);
 	static final int NUMROWS = 8;
 	static final int NUMCOLUMNS = NUMROWS;
-	static final int SQUAREWIDTH = 50;
+	static final int SQUAREWIDTH = 51;
 	static final int SQUAREHEIGHT = SQUAREWIDTH;
 	static final int BOARDLEFT = 50;
 	static final int BOARDTOP = BOARDLEFT;
@@ -30,6 +29,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 	boolean m_bClash = false;
 	Button m_btnSolve = new Button("Solve");
 	boolean m_bSolving = false;
+	int m_nSleepTime = 200;
 	
 	/**
 	 * 
@@ -37,7 +37,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 	public void init()
 	{
 		addMouseListener(this);
-		setSize(1020, 700);
+		setSize(500, 500);
 		
 		add(m_btnSolve);
 		m_btnSolve.addActionListener( this );
@@ -76,17 +76,16 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 			{
 				if(m_bSolving)
 				{
-					Solver(0,0);
+					Solver(0);
 				}
 				m_bSolving = false;
 				m_btnSolve.setEnabled(true);
 				
-				Thread.sleep(30);
+				Thread.sleep(m_nSleepTime);
 			}
 		} 
 		catch (InterruptedException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -109,6 +108,69 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 		g.drawString( m_strStatus, BOARDLEFT, BOARDTOP * 8 + 20 );
 	}
 	
+	private boolean Solver(int nColumn) throws InterruptedException 
+	{
+		int nRow = 0;
+
+		// base case
+		if (nColumn >= NUMCOLUMNS)
+			return true;
+	
+		while(true)
+		{
+			// toggle
+			m_nBoard[nRow][nColumn] ^= 1;
+			repaint();
+			Thread.sleep(m_nSleepTime);
+			
+			// if clashed
+			if(m_bClash)
+			{
+				// undo
+				m_nBoard[nRow][nColumn] ^= 1;
+				m_bClash = false;
+				
+				// move to next row
+				nRow++;
+						
+				// no solution found here
+				if (nRow == NUMROWS)
+					return false;
+				
+						continue;
+			}
+			else if(!m_bClash)
+			{
+				if( Solver(nColumn + 1) == false)
+				{
+					// undo
+					m_nBoard[nRow][nColumn] ^= 1;
+					m_bClash = false;
+					
+					// move to next row
+					nRow++;
+					
+					if (nRow == NUMROWS)
+						return false;
+					
+					continue;
+				}
+				else
+					return true;
+
+			}
+			
+				
+		}	
+		
+	}
+
+	private void ClearBoard() {
+		for (int i=0; i<NUMCOLUMNS; i++)
+			for (int j=0; j<NUMROWS; j++)
+				m_nBoard[i][j] = 0;
+	}
+
 	private void DrawBoard(Graphics g) 
 	{
 		g.setColor( Color.BLACK );
@@ -122,52 +184,12 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 				if( m_nBoard[i][j] != 0 )
 				{
 					g.drawImage( m_imgLogo,
-						BOARDLEFT + j * SQUAREWIDTH + 2, 
-						BOARDTOP + i * SQUAREHEIGHT + 2, 
+						BOARDLEFT + j * SQUAREWIDTH + 1, 
+						BOARDTOP + i * SQUAREHEIGHT + 1, 
 						null );
 				}
 			}
 		}
-	}
-
-	private void Solver(int row, int column) throws InterruptedException 
-	{
-		repaint();
-		System.out.println("Solving");
-
-		// base case
-		if (column >= NUMCOLUMNS)
-			return;
-		
-		// toggle
-		m_nBoard[row][column] ^= 1;
-		repaint();
-		Thread.sleep(200);
-		
-		// if clashed
-		if(m_bClash)
-		{
-			//undo
-			m_nBoard[row][column] ^= 1;
-			repaint();
-			Thread.sleep(200);
-			m_bClash = false;
-			if (row + 1 == NUMROWS)
-				return;
-			
-			// try next row
-			Solver(row + 1, column);
-		}	
-		
-		// if no clash
-		if(!m_bClash)
-			// move to the next column
-			Solver(0, column + 1);
-		
-		repaint();
-		return;
-		
-		
 	}
 
 	private void CheckRows(Graphics g) {
@@ -421,11 +443,6 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 		Thread m_objThread = new Thread(this);
 		m_objThread.start();
 		
-		
-	}
-
-	private void ClearBoard() {
-		// TODO Auto-generated method stub
 		
 	}
 
