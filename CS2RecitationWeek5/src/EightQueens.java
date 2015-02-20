@@ -133,13 +133,13 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 		// bring it all to the foreground
 		g.drawImage(offScreen,0,0,this);
 		
-		CheckUserSolution();
 	}
 	
 	private void CheckUserSolution() 
 	{
 		int count = 0;
-		if (m_lblStatus.getText() == m_strUserSolve)
+		if (m_lblStatus.getText() == m_strUserSolve || m_lblStatus.getText() == m_strUserSolved)
+			
 		{
 			for(int i=0; i<NUMCOLUMNS; i++)
 				for(int j=0; j<NUMROWS; j++)
@@ -448,13 +448,14 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 	public void mousePressed(MouseEvent ms) {
 		int nColumnClicked;
 		int nRowClicked;
+
 		
 		// if solving, don't let user edit board
 		if (m_lblStatus.getText() == m_strSolving)
 			return;
 		
 		// If we solved, we want to give the user a fresh board
-		if (m_lblStatus.getText() == m_strSolved)
+		if (m_lblStatus.getText() == m_strSolved || m_lblStatus.getText() == m_strUserSolved)
 			ClearBoard();
 		
 		
@@ -469,6 +470,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 		
 		m_lblStatus.setText(m_strUserSolve);
 		m_nBoard[nRowClicked][nColumnClicked] ^= 1;
+		CheckUserSolution();
 		repaint();
 				
 		}
