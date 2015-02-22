@@ -1,7 +1,7 @@
 
 public class BSTNode 
 {
-	BSTNode m_objLeftNode, m_objRightNode;
+	BSTNode m_objLeftNode, m_objRightNode, m_objParentNode;
 	int m_nKeyValue;
 	
 	public BSTNode()
@@ -64,6 +64,19 @@ public class BSTNode
 	{
 		// Return the value.
 		return( m_nKeyValue );
+	}
+	
+	public void SetParentNode( BSTNode objParentNode)
+	{
+		// Assign the parent node object reference.
+		m_objParentNode = objParentNode;
+	}
+	
+	// Accessor method to get the parent node object.
+	public BSTNode GetParentNode()
+	{
+		// Return the object.
+		return( m_objParentNode );
 	}
 
 }

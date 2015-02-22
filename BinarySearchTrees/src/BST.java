@@ -1,4 +1,4 @@
-import java.math.*;
+
 public class BST 
 {
 	// This is the root node, which starts off as null
@@ -6,7 +6,7 @@ public class BST
 	BSTNode m_objRootNode;
 
 	// minimum interval between landing times
-	private static int m_nK = 3;
+	int m_nK = 2;
 	
 	// Class constructor.
 	public BST()
@@ -91,29 +91,34 @@ public class BST
         // Here we need to walk left.
         else if( nKeyValue < objNode.GetKeyValue() )
         {
-        	// If the k test passes, continue
-        	if( PassesKTest(nKeyValue, objNode.GetKeyValue()) )
+        	// Insert iff it passes the k test
+        	if( PassesKTest(nKeyValue, objNode.GetKeyValue()))
         	{
         		// Set the left node of this object by recursively walking left.
         		objNode.SetLeftNode( Insert( nKeyValue, objNode.GetLeftNode() ) );
+        		// Set this object as the parent node of its child
+        		objNode.GetLeftNode().SetParentNode(objNode);
         	}
-        	// If the k test fails, don't insert
+        	// Don't insert iff fails k test
         	else
-        		return null;
+        		return objNode;
         }
         
-        // Here we need to talk right.
+        // Here we need to walk right.
         else if( nKeyValue > objNode.GetKeyValue() )
         {
-        	// If the k test passes, continue
-        	if( PassesKTest(nKeyValue, objNode.GetKeyValue()) )
+        	// Insert iff it passes the k test
+        	if( PassesKTest(nKeyValue, objNode.GetKeyValue()))
         	{
         		// Set the right node of this object by recursively walking right.
         		objNode.SetRightNode( Insert( nKeyValue, objNode.GetRightNode() ) );
+        		
+        		// Set this object as the parent of its child
+        		objNode.GetRightNode().SetParentNode(objNode);	
         	}
-        	// If the k test fails, don't insert
-        	else
-        		return null;
+        	// Don't insert iff fails k test
+        	else 
+        		return objNode;
         }
         
         return( objNode );
@@ -139,18 +144,29 @@ public class BST
     	// If no children, return null
     	if( objNode.GetLeftNode() == null && objNode.GetRightNode() == null)
     	{
+    		// point parent's pointer to null instead of this object
+
+    		// This object is right of parent
+    		if( objNode.GetParentNode().GetKeyValue() < objNode.GetKeyValue() )
+    			// Make parent's right pointer point null
+    			objNode.GetParentNode().SetRightNode(null);
+    		// This object is left of parent
+    		else
+    			objNode.GetParentNode().SetLeftNode(null);
     		return null;
     	}
-    	// If only 1 child, return that child
+    	// If only 1 child, update its parent and return that child
     	else if( objNode.GetLeftNode() != null ^ objNode.GetRightNode() != null )
     	{
-    		// Which child is not null?
+    		// Return the child that exists
     		if( objNode.GetLeftNode() != null)
     		{
+    			objNode.GetLeftNode().SetParentNode(objNode.GetParentNode());
     			return objNode.GetLeftNode();
     		}
     		else
     		{
+    			objNode.GetRightNode().SetParentNode(objNode.GetParentNode());
     			return objNode.GetRightNode();
     		}
     	}
@@ -210,7 +226,7 @@ public class BST
     // This method checks that two keys pass the k test
     private boolean PassesKTest ( int nInsert, int nCompare )
     {
-    	if( java.lang.Math.abs(nInsert - nCompare) < m_nK )
+    	if( java.lang.Math.abs(nInsert - nCompare) > m_nK )
     		return true;
     	else
     		return false;
@@ -221,7 +237,7 @@ public class BST
 	}
 
 	public void setM_nK(int m_nK) {
-		BST.m_nK = m_nK;
+		this.m_nK = m_nK;
 	}
     
 }
