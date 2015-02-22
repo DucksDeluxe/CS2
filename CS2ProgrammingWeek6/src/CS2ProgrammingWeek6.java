@@ -304,6 +304,24 @@ public class CS2ProgrammingWeek6
 	 */
 	static int numberOfTriples(String str) 
 	{
+		// at each letter, check if the next two match
+		// if so, increment count.
+		
+		int nCount = 0;
+		
+		// less than 3 letters?
+		if( str.length() < 3 )
+			return nCount;
+		
+		// loop through
+		for( int i=0; i<str.length() - 2; i++ )
+		{
+			// if both characters after this position match this positon
+			if( str.charAt(i) == str.charAt(i+1) && str.charAt(i) == str.charAt(i+2) )
+				// increment
+				nCount++;
+		}
+		return nCount;
 	}
 	
 	//	Problem #6
@@ -324,8 +342,25 @@ public class CS2ProgrammingWeek6
 	 * @return 
 	 * 		Integer containing the # sum of all digits that appear in str
 	 */
-	//TODO static int addUpDigits(String str) 
+	static int addUpDigits(String str) 
 	{
+		int sum = 0;
+		
+		// loop through string
+		for( int i=0; i<str.length(); i++)
+		{
+			// is this a char?
+			if( !Character.isDigit( str.charAt(i) ) )
+				continue;
+			// is this a digit?
+			if( Integer.parseInt( String.valueOf( str.charAt(i) ) ) > 0 
+					&& Integer.parseInt( String.valueOf( str.charAt(i) ) ) < 9);
+			{
+				// add it to the sum
+				sum += Integer.parseInt( String.valueOf( str.charAt(i) ) );
+			}
+		}
+		return sum;
 	}
 	
 	//	Problem #7
@@ -345,8 +380,55 @@ public class CS2ProgrammingWeek6
 	 * @return 
 	 * 		String containing the beginning and ending substrings that are the same
 	 */
-	//TODO static String beginningAndEndOfString(String string) 
+	static String beginningAndEndOfString(String string) 
 	{
+		// we know the substring can't contain more than half of the original string
+		// split string in half
+		// compare string 1 to string 2
+		// if no match, remove str1's last val and str2's first val
+		// repeat until match found or end of strings
+		
+		String strLeft;
+		String strRight;
+		
+		// less than 2 chars
+		if( string.length() < 2 )
+			return "";
+		
+		// if the string has even number of characters
+		if( string.length() % 2 == 0 )
+		{
+			// split it right down the middle
+			strLeft = string.substring(0, string.length() / 2);
+			strRight = string.substring(string.length() / 2);
+		}
+		// if string has odd number
+		else
+		{
+			// split left and right of middle char
+			strLeft = string.substring(0, string.length() / 2);
+			strRight = string.substring(string.length() / 2 + 1);
+		}
+		
+		// loop the length of the left and right strings
+		for( int i=0; i<strLeft.length(); i++)
+		{
+			// if the strings are equal
+			if( strLeft.compareTo(strRight) == 0 )
+				return strLeft;
+			// if the strings are not equal
+			else
+			{
+				// trim inner char from both strings
+				strLeft = strLeft.substring(0, strLeft.length() - 1);
+				strRight = strRight.substring(1);
+			}
+		}
+		
+		// no solution found
+		return "";
+		
+		
 	}
 	
 	//	Problem #8
@@ -368,8 +450,30 @@ public class CS2ProgrammingWeek6
 	 * @return 
 	 * 		String containing the beginning of the string that is mirrored at the end
 	 */
-	//TODO static String beginningMirrorEnd(String string) 
+	static String beginningMirrorEnd(String string) 
 	{
+		int nCount = 0;
+		
+		// less than two digits
+		if ( string.length() < 2 )
+			return string;
+		
+		// iterate over the string
+		for( int i=0; i<string.length(); i++ )
+		{
+			// walk inward and compare
+			if( string.charAt(i) == string.charAt( string.length() - 1 - i ) )
+			{
+				// track how many matches there are
+				nCount++;
+			}
+			else
+				break;
+		}
+		
+		//return new substring
+		return ( string.substring(0, nCount) );
+		
 	}
 	
 	//	Problem #9
@@ -388,8 +492,36 @@ public class CS2ProgrammingWeek6
 	 * @return 
 	 * 		Integer containing the # of chars in the largest "block" in str
 	 */
-	//TODO static int largestBlock(String str) 
+	static int largestBlock(String str) 
 	{
+		int nMax = 0;
+		int nCurrent = 1;
+		
+		// string length of 0
+		if( str.length() == 0 )
+			return 0;
+		
+		// loop through string
+		for( int i=0; i<str.length() - 1; i++)
+		{
+			// if adjacents match
+			if( str.charAt(i) == str.charAt(i+1))
+				// count them
+				nCurrent++;
+			// if no match
+			else
+			{
+				// if current count is greater than max count
+				if (nMax < nCurrent)
+					// update max
+					nMax = nCurrent;
+				// reset current
+				nCurrent = 1;
+			}
+		}
+		return nMax;
+		
+		
 	}
 	
 	//	Problem #10
@@ -455,6 +587,35 @@ public class CS2ProgrammingWeek6
 		assert numberOfTriples("abcXXXabc") == 1;
 		assert numberOfTriples("xxxabyyyycd") == 3;
 		assert numberOfTriples("a") == 0;
+		assert numberOfTriples("xxyy") == 0;
+		
+		assert addUpDigits("aa1bc2d3") == 6;
+		assert addUpDigits("aa11b33") == 8;
+		assert addUpDigits("Chocolate") == 0;
+		assert addUpDigits("") == 0;
+		assert addUpDigits(" ") == 0;
+		assert addUpDigits("tes4 5") == 9;
+		assert addUpDigits("1 5") == 6;
+		assert addUpDigits(" 1") == 1;
+		
+		assert beginningAndEndOfString("abXYab").equals("ab");
+		assert beginningAndEndOfString("xx").equals("x");
+		assert beginningAndEndOfString("xxx").equals("x");
+		assert beginningAndEndOfString("hannah").equals("");
+		
+		assert beginningMirrorEnd("abXYZba").equals("ab");
+		assert beginningMirrorEnd("abca").equals("a");
+		assert beginningMirrorEnd("aba").equals("aba");
+		assert beginningMirrorEnd("").equals("");
+		assert beginningMirrorEnd("hanah").equals("hanah");
+		assert beginningMirrorEnd("hannah").equals("hannah");
+		assert beginningMirrorEnd("a").equals("a");
+		assert beginningMirrorEnd("ab").equals("");
+		assert beginningMirrorEnd("aufielkjf").equals("");
+		
+		assert largestBlock("hoopla") == 2;
+		assert largestBlock("abbCCCddBBBxx") == 3;
+		assert largestBlock("") == 0;
 	}
 	
 }
