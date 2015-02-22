@@ -494,12 +494,13 @@ public class CS2ProgrammingWeek6
 	 */
 	static int largestBlock(String str) 
 	{
-		int nMax = 0;
+		int nMax = 1;
 		int nCurrent = 1;
 		
 		// string length of 0
 		if( str.length() == 0 )
 			return 0;
+		
 		
 		// loop through string
 		for( int i=0; i<str.length() - 1; i++)
@@ -519,6 +520,12 @@ public class CS2ProgrammingWeek6
 				nCurrent = 1;
 			}
 		}
+		
+		// if current is greater than max
+		if( nMax < nCurrent)
+			// update max
+			nMax = nCurrent;
+		
 		return nMax;
 		
 		
@@ -542,8 +549,49 @@ public class CS2ProgrammingWeek6
 	 * @return 
 	 * 		Integer containing the sum of all the numbers that appear in str
 	 */
-	//TODO static int addUpNumbers(String str) 
+	static int addUpNumbers(String str) 
 	{
+		// search string for number
+		// find length of number
+		// parse number
+		// add to sum
+		// repeat until end of string
+		// return sum
+		
+		int nSum = 0;
+		String strNum;
+		
+		// iterate over sting
+		for( int i=0; i<str.length(); i++ )
+		{
+			// clear
+			strNum = "";
+			
+			// if we found a digit
+			if( Character.isDigit(str.charAt(i) ) )
+			{
+				// grab it
+				strNum += String.valueOf(str.charAt(i));
+				// how many follow?
+				for( int j=i+1; j<str.length(); j++ )
+				{
+					// if this is a digit
+					if( Character.isDigit(str.charAt(j) ) )
+						// grab it
+						strNum += String.valueOf(str.charAt(j));
+					else
+					{
+						break;
+					}
+					// update i
+					i = j;
+				}
+			}
+			// add new val to sum
+			if ( strNum.length() != 0 )
+				nSum += Integer.parseInt(strNum);
+		}
+		return nSum;
 	}
 	
 	///////////////////////////////////////////
@@ -616,6 +664,15 @@ public class CS2ProgrammingWeek6
 		assert largestBlock("hoopla") == 2;
 		assert largestBlock("abbCCCddBBBxx") == 3;
 		assert largestBlock("") == 0;
+		assert largestBlock("a") == 1;
+		assert largestBlock("abcdefghi") == 1;
+		assert largestBlock("aa") == 2;
+		assert largestBlock("aaa") == 3;
+		
+		assert addUpNumbers("abc123xyz") == 123;
+		assert addUpNumbers("aa11b33") == 44;
+		assert addUpNumbers("7 11") == 18;
+		assert addUpNumbers("1") == 1;
 	}
 	
 }
