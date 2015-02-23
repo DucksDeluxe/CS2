@@ -3,6 +3,8 @@ public class BSTNode
 {
 	BSTNode m_objLeftNode, m_objRightNode, m_objParentNode;
 	int m_nKeyValue;
+	int m_nSubTreeSize = 1;
+	int m_nRank = 0;
 	
 	public BSTNode()
 	{
@@ -77,6 +79,22 @@ public class BSTNode
 	{
 		// Return the object.
 		return( m_objParentNode );
+	}
+
+	public int getM_nSubTreeSize() {
+		return m_nSubTreeSize;
+	}
+
+	public void setM_nSubTreeSize(int m_nSubTreeSize) {
+		this.m_nSubTreeSize = m_nSubTreeSize;
+	}
+
+	public int getM_nRank() {
+		return m_nRank;
+	}
+
+	public void setM_nRank(int m_nRank) {
+		this.m_nRank = m_nRank;
 	}
 
 }
