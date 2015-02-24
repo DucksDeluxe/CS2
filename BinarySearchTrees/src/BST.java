@@ -99,6 +99,8 @@ public class BST
         		objNode.SetLeftNode( Insert( nKeyValue, objNode.GetLeftNode() ) );
         		// Set this object as the parent node of its child
         		objNode.GetLeftNode().SetParentNode(objNode);
+        		ResetSubTreeSizes(objNode, true);
+//        		ResetRanks(objNode.GetLeftNode());
         	}
         	// Don't insert iff fails k test
         	else
@@ -118,6 +120,9 @@ public class BST
         		
         		// Set this object as the parent of its child
         		objNode.GetRightNode().SetParentNode(objNode);	
+        		ResetSubTreeSizes(objNode, true);
+//       		ResetRanks(objNode.GetRightNode());
+
         	}
         	// Don't insert iff fails k test
         	else 
@@ -126,9 +131,6 @@ public class BST
         	}
         }
         
-		// recalculate subtree sizes
-		ResetSubTreeSizes(objNode, true);
-//		ResetRanks(objNode);
         return( objNode );
     }
     
@@ -138,7 +140,9 @@ public class BST
      */
     public void Delete( int nKeyValue )
     {
-    	Delete( nKeyValue, Search( nKeyValue ) );
+    	Delete( nKeyValue, Search( nKeyValue ) ) ;
+//    	if( replacement != null )
+//    		ResetRanks(replacement);
     }
     
     /**
@@ -170,10 +174,6 @@ public class BST
     				
     				// delete old node
     				Delete(GetMaxNode(objNode.GetLeftNode()).GetKeyValue(), GetMaxNode(objNode.GetLeftNode()));
-    				// update ranks
-//    				ResetRanks(objNode.GetRightNode());
-    				
-    				
     			}	
     			// left didn't exist, get min of right
     			else if( GetMinNode(objNode.GetRightNode()) != null )
@@ -184,13 +184,7 @@ public class BST
     				
     				// delete old node
     				Delete(GetMinNode(objNode.GetLeftNode()).GetKeyValue(), GetMinNode(objNode.GetLeftNode()));
-    				
-    				// update ranks
-//    				ResetRanks(objNode.GetRightNode());
-
     			}
-    				
-    					
     		}
     		// This object is right of parent
     		if( objNode.GetParentNode().GetKeyValue() < objNode.GetKeyValue() )
@@ -202,7 +196,6 @@ public class BST
     		
     		// recalculate subtree sizes
     		ResetSubTreeSizes(objNode.GetParentNode(), false);
-//    		ResetRanks(objNode);
     		
     		return null;
     	}
@@ -227,8 +220,7 @@ public class BST
     			
     			// recalculate subtree sizes
         		ResetSubTreeSizes(objNode.GetParentNode(), false);
-        		// update rank
-//        		ResetRanks(objNode);
+        	
         		
     			return objNode.GetLeftNode();
     		}
@@ -250,7 +242,6 @@ public class BST
     			
     			// recalculate subtree sizes
         		ResetSubTreeSizes(objNode.GetParentNode(), false);
-//        		ResetRanks(objNode);
         		
     			return objNode.GetRightNode();
     		}
@@ -264,7 +255,6 @@ public class BST
     		
     		// recalculate subtree sizes
     		//ResetSubTreeSizes(GetMinNode(objNode).GetParentNode(), false);
-//    		ResetRanks(objNode);
     		
     		// delete the node that was copied and pass its return up the stack
     		return Delete ( GetMinNode(objNode.GetRightNode()).GetKeyValue(), GetMinNode(objNode.GetRightNode()) );
@@ -329,8 +319,125 @@ public class BST
 		this.m_nK = m_nK;
 	}
 	
-	//private void ResetRanks( BSTNode objNode )
+	// I don't like this method 
+	// it makes every insert and delete run in O(n) time
+	// and makes stack overflow much more likely to occur
+	// there has to be a better way.
+	
+	//NEW LOGIC (Runs into stack overflow, because it recurses between a parent and child)
+	// if insert:
+	// 		if root key > insert key : new node rank = left sub size + 1
+	//			recurse to parents and right children if they exist
+	//		if root key < insert key : new node rank = left sub size + parent rank + 1
+	//			recurse to right children if they exist
+	//		if insert is root : rank = 1
+	// if delete:
+	//		if root key > delete key : reset begins at parent of deleted node
+	//			recurse to parents and right children if they exist
+	// 		if root key < delete key : reset begins at same location if replaced (or not called if not replaced)
+	//			recurse to right children if they exist
+	//only nodes to the right must have rank update
+	
+	// This needs to be called after insert on the node that is inserted
+	// This needs to be called after delete on the node (if any) that replaces the deleted node
+//TODO	private void ResetRanks( BSTNode objNode )
 	{
+		/*
+		System.out.println(objNode.GetKeyValue());
+		// inserted the root
+		if( m_objRootNode == null )
+		{
+			objNode.setM_nRank(1);
+			return;
+		}
+		
+		// on left side of tree
+		if( m_objRootNode.GetKeyValue() > objNode.GetKeyValue() )
+		{
+			// update this rank
+			if(bHasLeftChild(objNode))
+				// set this rank (left sub size + 1)
+				objNode.setM_nRank(objNode.GetLeftNode().getM_nSubTreeSize() + 1);
+
+			// update parent
+			if(objNode.GetParentNode() != null)
+				// recurse to parent
+				ResetRanks(objNode.GetParentNode());
+			
+			// update right child
+			if(bHasRightChild(objNode))
+			// recurse to right
+				ResetRanks(objNode.GetRightNode());
+		}
+		
+		// on right side of tree
+		if( m_objRootNode.GetKeyValue() < objNode.GetKeyValue() )
+		{
+			// update this rank - has left child
+			if(bHasLeftChild(objNode))
+				// set this rank (left sub size + parent rank + 1)
+				objNode.setM_nRank(objNode.GetLeftNode().getM_nSubTreeSize() + objNode.GetParentNode().getM_nRank() + 1);
+			// update this rank - no left child
+			else
+				System.out.println(objNode.GetKeyValue());
+				objNode.setM_nRank(objNode.GetParentNode().getM_nRank() + 1);
+			
+			// walk right
+			if(bHasRightChild(objNode))
+				ResetRanks(objNode.GetRightNode());
+			
+			// update the parent if it is right
+			if(objNode.GetParentNode().GetKeyValue() > objNode.m_nKeyValue )
+				ResetRanks(objNode.GetParentNode());
+		}
+		
+		/*
+		
+		// walk left
+		if(bHasLeftChild(objNode))
+		{
+			ResetRanks(objNode.GetLeftNode());
+		
+			// if at min node of tree, rank = 1
+			if(objNode == GetMinNode(m_objRootNode))
+			{
+				objNode.setM_nRank(1);
+			}
+			
+			if( objNode.GetParentNode() != null )
+			{
+				// if on right side of tree, rank = left subtree size + 1 + parent rank
+				if( objNode.m_objParentNode.GetKeyValue() < objNode.GetKeyValue() )
+				{
+					objNode.setM_nRank(objNode.GetLeftNode().getM_nSubTreeSize() + objNode.getM_nRank() + 1);
+				}
+				// on left side of tree, rank = left subtree size + 1
+				else
+				{
+					objNode.setM_nRank(objNode.GetLeftNode().getM_nSubTreeSize() + 1);
+				}
+			}
+		}
+		
+		// walk right
+		if(bHasRightChild(objNode))
+		{
+			// do to all but the parent
+			if( objNode.GetParentNode() != null )
+			{
+				// right child's rank = parent rank + 1
+				objNode.setM_nRank(objNode.GetParentNode().getM_nRank() + 1);
+			}
+			
+			ResetRanks(objNode.GetRightNode());
+		}
+		*/
+		
+		
+		// if this is the parent of a left child
+		// its rank is the left subtree size + 1
+		
+		
 		
 		/*
 		// base case (child of leaf)

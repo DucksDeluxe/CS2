@@ -4,7 +4,7 @@ public class BSTNode
 	BSTNode m_objLeftNode, m_objRightNode, m_objParentNode;
 	int m_nKeyValue;
 	int m_nSubTreeSize = 1;
-	int m_nRank = 0;
+	int m_nRank;
 	
 	public BSTNode()
 	{

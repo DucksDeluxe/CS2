@@ -34,7 +34,7 @@ public class EightQueens extends Applet implements MouseListener, MouseMotionLis
 	private static final int BOARDLEFT = 50;
 	private static final int BOARDTOP = BOARDLEFT;
 	private int m_nBoard[][] = new int[NUMROWS][NUMCOLUMNS];
-	private int m_nSleepTime = 10;
+	private int m_nSleepTime = 20;
 	private int m_nCurrentSolution = 0;
 	//Boolean
 	private boolean m_bSolving = false;
