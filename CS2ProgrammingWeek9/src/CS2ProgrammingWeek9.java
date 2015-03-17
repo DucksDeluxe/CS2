@@ -23,9 +23,9 @@ public class CS2ProgrammingWeek9
 	 */
 	static String GetNameAndPID()
 	{
-		return("Last,First,PID");
+		return("VanWinkle,Justin,J3338546");
 	}
-	
+	/
 	//	Problem #1
 	//	We want to make a row of bricks that is goal inches long. We have a number of 
 	//	small bricks (1 inch each) and big bricks (5 inches each). Return true if it 
@@ -49,6 +49,7 @@ public class CS2ProgrammingWeek9
 	 */
 	static boolean makeRowOfGoalBricks(int small, int big, int goal) 
 	{
+		
 	}
 
 	//	Problem #2
