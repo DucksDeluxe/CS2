@@ -48,11 +48,17 @@ public class CS2ProgrammingWeek9
 	 */
 	static boolean makeRowOfGoalBricks(int small, int big, int goal) 
 	{
-		//LOGIC:
-		//	gap between 5" bricks and goal must be <= num small bricks
-		// return true iff goal / (#big * 5) + goal % 5 <= small bricks.
-			
-		return (goal / (big * 5) + goal % 5 <= small ? true : false);
+		// enough big to put us within 5 inches of reaching goal
+		if ( big >= goal / 5 )
+		{
+			// we only need the remainder
+			return (goal % 5 <= small ? true : false);
+		}
+		
+		// not enough big to put us within 5 inches of reaching goal
+		else
+			// we need enough small to cover remainder
+			return ( (goal % 5)+(goal - big * 5) <= small ? true : false );
 	}
 
 	//	Problem #2
@@ -196,7 +202,7 @@ public class CS2ProgrammingWeek9
 			return num - num % 10;
 		// 5 or greater - round up
 		else
-			return num + num % 10;
+			return num + 10 - (num % 10);
 			
 	}
 	
@@ -220,11 +226,11 @@ public class CS2ProgrammingWeek9
 	static boolean isCloseAndFar(int a, int b, int c) 
 	{
 		// b close, c far
-		if ( Math.abs(a-b) <= 1 && !(Math.abs(a-c) <= 1) )
+		if ( Math.abs(a-b) <= 1 && !(Math.abs(a-c) <= 1) && !(Math.abs(b-c) <= 1) )
 			return true;
 		
 		// c close, b far
-		else if ( Math.abs(a-c) <= 1 && !(Math.abs(a-b) <= 1) )
+		else if ( Math.abs(a-c) <= 1 && !(Math.abs(a-b) <= 1) && !(Math.abs(b-c) <= 1) )
 			return true;
 		
 		// condition not met
@@ -354,20 +360,16 @@ public class CS2ProgrammingWeek9
 	{
 		
 		// enough big to put us within 5 kilos of reaching goal
-		if ( big > goal / 5 )
+		if ( big >= goal / 5 )
 		{
 			// we only need the remainder
 			return (goal % 5 <= small ? goal % 5 : -1);
 		}
 		
 		// not enough big to put us within 5 kilos of reaching goal
-		if ( big < goal / 5 )
+		else
 			// we need enough small to cover remainder
 			return ( (goal % 5)+(goal - big * 5) <= small ? (goal % 5)+(goal - big * 5) : -1 );
-		
-		return -1;
-
-		
 	}
 	
 	///////////////////////////////////////////
@@ -378,6 +380,7 @@ public class CS2ProgrammingWeek9
 	
 	public static void main(String[] args)
 	{
+		
 		assert makeRowOfGoalBricks(3, 1, 8) == true;
 		assert makeRowOfGoalBricks(3, 1, 9) == false;
 		assert makeRowOfGoalBricks(3, 2, 10) == true;
