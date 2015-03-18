@@ -1,4 +1,3 @@
-import java.util.Scanner;
 
 ///////////////////////////////////////////
 //
@@ -25,7 +24,7 @@ public class CS2ProgrammingWeek9
 	{
 		return("VanWinkle,Justin,J3338546");
 	}
-	/
+	
 	//	Problem #1
 	//	We want to make a row of bricks that is goal inches long. We have a number of 
 	//	small bricks (1 inch each) and big bricks (5 inches each). Return true if it 
@@ -49,7 +48,11 @@ public class CS2ProgrammingWeek9
 	 */
 	static boolean makeRowOfGoalBricks(int small, int big, int goal) 
 	{
-		
+		//LOGIC:
+		//	gap between 5" bricks and goal must be <= num small bricks
+		// return true iff goal / (#big * 5) + goal % 5 <= small bricks.
+			
+		return (goal / (big * 5) + goal % 5 <= small ? true : false);
 	}
 
 	//	Problem #2
@@ -70,7 +73,25 @@ public class CS2ProgrammingWeek9
 	 */
 	static int sumExcludingDuplicates(int a, int b, int c) 
 	{
-	}	
+		// if there is a match
+		if( a==b || a==c || b==c )
+		{
+			// all match
+			if( a==b && a==c )
+				return 0;
+			// a = b
+			else if( a==b )
+				return c;
+			// a = c
+			else if( a==c )
+				return b;
+			// b = c
+			else if( b==c )
+				return a;
+		}
+		// no matches
+		return a+b+c;
+	}
 
 	//	Problem #3
 	//	Given 3 int values, a b c, return their sum. However, if one of the values is 
@@ -89,9 +110,20 @@ public class CS2ProgrammingWeek9
 	 * @return
 	 * 		returns the sum of the input where values to the right of 13, inclusive, are not included
 	 */
-	static int sumExcludingUnluckyNums(int a, int b, int c) 
+	static int sumExcludingUnluckyNums(int a, int b, int c)
 	{
-	}	
+		// a = 13
+		if ( a==13 )
+			return 0;
+		// b=13
+		if ( b==13 )
+			return a;
+		// c=13
+		if ( c==13 )
+			return a+b;
+		// no 13s
+		return a+b+c;
+	}
 
 	//	Problem #4
 	//	Given 3 int values, a b c, return their sum. However, if any of the values is a 
@@ -114,10 +146,21 @@ public class CS2ProgrammingWeek9
 	 */
 	static int sumExcludingTeens(int a, int b, int c) 
 	{
+		// return the sum
+		return fixTeen(a) + fixTeen(b) + fixTeen(c);
 	}
 	
 	static int fixTeen(int num)
 	{
+		// check for teen
+		if ( num >= 13 && num <= 19 )
+			// check for 15 or 16
+			if ( num == 15 || num == 16 )
+				return num;
+			else
+				return 0;
+		// not a teen
+		return num;
 	}
 	
 	//	Problem #5
@@ -142,10 +185,19 @@ public class CS2ProgrammingWeek9
 	 */
 	static int roundedSum(int a, int b, int c) 
 	{
+		// return sum of rounded numbers
+		return round(a) + round(b) + round(c);
 	}
 	
 	static int round(int num)
 	{
+		// less than 5 - round down
+		if ( num % 10 < 5 )
+			return num - num % 10;
+		// 5 or greater - round up
+		else
+			return num + num % 10;
+			
 	}
 	
 	//	Problem #6
@@ -167,6 +219,17 @@ public class CS2ProgrammingWeek9
 	 */
 	static boolean isCloseAndFar(int a, int b, int c) 
 	{
+		// b close, c far
+		if ( Math.abs(a-b) <= 1 && !(Math.abs(a-c) <= 1) )
+			return true;
+		
+		// c close, b far
+		else if ( Math.abs(a-c) <= 1 && !(Math.abs(a-b) <= 1) )
+			return true;
+		
+		// condition not met
+		else
+			return false;
 	}
 	
 	//	Problem #7
@@ -187,6 +250,25 @@ public class CS2ProgrammingWeek9
 	 */
 	static int blackjack(int a, int b) 
 	{
+		// both over
+		if ( a > 21 && b > 21 )
+			return 0;
+		
+		// a over
+		else if ( a > 21 )
+			return b;
+		
+		// b over
+		else if ( b > 21 )
+			return a;
+		
+		// a is highest
+		else if ( a-b > 0 )
+			return a;
+		
+		// b is highest
+		else
+			return b;
 	}
 	
 	//	Problem #8
@@ -209,6 +291,43 @@ public class CS2ProgrammingWeek9
 	 */
 	static boolean spacedEvenly(int a, int b, int c) 
 	{
+		int ab, bc, ac;
+		
+		// find spacing
+		ab = Math.abs(a-b);
+		bc = Math.abs(b-c);
+		ac = Math.abs(a-c);
+		
+		// ab = ac
+		if ( ab == ac )
+			// the other space needs to have a factor of 2
+			if( ab == bc*2 || bc == ab*2 )
+				return true;
+			else
+				return false;
+
+		// ab = bc
+		else if ( ab == bc )
+			// the other space needs to have a factor of 2
+			if( ab == ac*2 || ac == ab*2 )
+				return true;
+			else
+				return false;
+		
+		// ac = bc
+		else if ( ac == bc )
+			// the other space needs to have a factor of 2
+			if( ac == ab*2 || ac == ab*2 )
+				return true;
+			else
+				return false;
+		
+		// no even spacing
+		else
+			return false;
+	
+
+		
 	}
 	
 	//	Problem #9
@@ -233,6 +352,22 @@ public class CS2ProgrammingWeek9
 	 */
 	static int makeKilosOfChocolate(int small, int big, int goal) 
 	{
+		
+		// enough big to put us within 5 kilos of reaching goal
+		if ( big > goal / 5 )
+		{
+			// we only need the remainder
+			return (goal % 5 <= small ? goal % 5 : -1);
+		}
+		
+		// not enough big to put us within 5 kilos of reaching goal
+		if ( big < goal / 5 )
+			// we need enough small to cover remainder
+			return ( (goal % 5)+(goal - big * 5) <= small ? (goal % 5)+(goal - big * 5) : -1 );
+		
+		return -1;
+
+		
 	}
 	
 	///////////////////////////////////////////
@@ -243,6 +378,41 @@ public class CS2ProgrammingWeek9
 	
 	public static void main(String[] args)
 	{
+		assert makeRowOfGoalBricks(3, 1, 8) == true;
+		assert makeRowOfGoalBricks(3, 1, 9) == false;
+		assert makeRowOfGoalBricks(3, 2, 10) == true;
+		
+		assert sumExcludingDuplicates(1, 2, 3) == 6;
+		assert sumExcludingDuplicates(3, 2, 3) == 2;
+		assert sumExcludingDuplicates(3, 3, 3) == 0;
+
+		assert sumExcludingUnluckyNums(1, 2, 3) == 6;
+		assert sumExcludingUnluckyNums(1, 2, 13) == 3;
+		assert sumExcludingUnluckyNums(1, 13, 3) == 1;
+		
+		assert sumExcludingTeens(1, 2, 3) == 6;
+		assert sumExcludingTeens(2, 13, 1) == 3;
+		assert sumExcludingTeens(2, 1, 14) == 3;
+		
+		assert roundedSum(16, 17, 18) == 60;
+		assert roundedSum(12, 13, 14) == 30;
+		assert roundedSum(6, 4, 4) == 10;
+		
+		assert isCloseAndFar(1, 2, 10) == true;
+		assert isCloseAndFar(1, 2, 3) == false;
+		assert isCloseAndFar(4, 1, 3) == true;
+		
+		assert blackjack(19, 21) == 21;
+		assert blackjack(21, 19) == 21;
+		assert blackjack(19, 22) == 19;
+		
+		assert spacedEvenly(2, 4, 6) == true;
+		assert spacedEvenly(4, 6, 2) == true;
+		assert spacedEvenly(4, 6, 3) == false;
+		
+		assert makeKilosOfChocolate(4, 1, 9) == 4;
+		assert makeKilosOfChocolate(4, 1, 10) == -1;
+		assert makeKilosOfChocolate(4, 1, 7) == 2;
+		
 	}
-	
 }
