@@ -1,0 +1,41 @@
+2
+4
+2 2
+3 5
+1 0
+4 4
+5
+0 0 1 9
+0 1 2 3
+2 1 0 5
+0 1 4 5
+0 0 0 0
+3
+1 1
+2 2
+3 3
+1
+4 4 9 7
+
+
+
+
+
+2			# Test Cases
+4			# Intersections to avoid
+2 2			Intersections to be avoided
+3 5
+1 0
+4 4
+5			# start/stop points
+0 0 1 9		start/stop points
+0 1 2 3
+2 1 0 5
+0 1 4 5
+0 0 0 0
+3			# Intersections to avoid
+1 1			Intersections to avoid
+2 2
+3 3
+1			# start/stop points
+4 4 9 7		# start/stop points
