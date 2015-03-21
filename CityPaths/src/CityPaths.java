@@ -1,62 +1,72 @@
 import java.io.File;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CityPaths 
 {
 	
 	private int m_nCitySize = 10;
-	private LinkedList<Integer>[] m_nIntersections;
-	private LinkedList<Integer>[] m_nBadIntersections;
+	private List[] m_nIntersections;
+	private List[] m_nBadIntersections;
 	
 	public CityPaths(String filename) throws Exception 
 	{
-		Scanner in = new Scanner(new File(filename));
+		Scanner in = new Scanner(new File("input.txt"));
 		
 		// get # test cases
 		int nNumTestCases = in.nextInt();
-		// get # bad intersections
-		int nNumBadIntersections = in.nextInt();
 		
-		// array of lists containing bad intersections
-		m_nBadIntersections = new LinkedList[m_nCitySize];
-		// populate bad intersections
-		for (int i=0; i<nNumBadIntersections; i++)
+		for(int nDataSet=0; nDataSet<nNumTestCases; nDataSet++)
 		{
-			m_nBadIntersections[in.nextInt()].add(in.nextInt());		
-		}
-		
-		// create city
-		m_nIntersections = new LinkedList[m_nCitySize];
-		// populate intersections
-		for (int i=0; i<m_nCitySize; i++)
-		{
-			for(int j=0; j<m_nCitySize; j++)
+			// get # bad intersections
+			int nNumBadIntersections = in.nextInt();
+			
+			// array of lists containing bad intersections
+			m_nBadIntersections = new List[m_nCitySize];
+			for(int i=0; i<m_nCitySize; i++)
 			{
-				// exclude bad intersections
-				if(m_nBadIntersections[i].contains(j))
-					continue;
-				else
-					m_nIntersections[i].add(j);
+				m_nBadIntersections[i] = new LinkedList<>();
 			}
+			
+			// populate bad intersections
+			for (int i=0; i<nNumBadIntersections; i++)
+			{
+				int x = in.nextInt();
+				int y = in.nextInt();
+				m_nBadIntersections[x].add(0, y);		
+			}
+			
+			// create city
+			m_nIntersections = new List[m_nCitySize];
+			// populate intersections
+			for (int i=0; i<m_nCitySize; i++)
+			{
+				m_nIntersections[i] = new LinkedList<>();
+				for(int j=0; j<m_nCitySize; j++)
+				{
+					// exclude bad intersections
+					if(m_nBadIntersections[i].contains(j))
+						continue;
+					else
+						m_nIntersections[i].add(0, j);;
+				}
+			}
+			
+			// get number of walks
+			int nNumStartStops = in.nextInt();
+			
+			
+			System.out.println("Data Set " + (nDataSet+1) + ":\n");
+			
+			// get start and stop positions of each walk
+			for(int i=0; i<nNumStartStops; i++)
+			{				
+				Output(nDataSet+1, i+1, Walk(in.nextInt(), in.nextInt(), in.nextInt(), in.nextInt()));
+			}
+			System.out.println("");
 		}
-		
-		// get number of walks
-		int nNumStartStops = in.nextInt();
-		int[] nStartX = new int[nNumStartStops];
-		int[] nStartY = new int[nNumStartStops];
-		int[] nStopX = new int[nNumStartStops];
-		int[] nStopY = new int[nNumStartStops];
-		
-		// get start and stop positions of each walk
-		for(int i=0; i<nNumStartStops; i++)
-		{
-			nStartX[i] = in.nextInt();
-			nStartY[i] = in.nextInt();
-			nStopX[i] = in.nextInt();
-			nStopY[i] = in.nextInt();
-		}
-		
+		in.close();
 	}
 	
 	
@@ -148,22 +158,18 @@ public class CityPaths
 	 * @param nDataSet
 	 * @param CaseAndPaths
 	 */
-	public void Output(int nDataSet, int[][] CaseAndPaths)
+	public void Output(int nDataSet, int nCase, int nPaths)
 	{
-		System.out.println("Data Set " + nDataSet + ":\n\n");
-		
-		for (int i = 0; i < CaseAndPaths.length; i++)
-		{
-			if (CaseAndPaths[i][1] != 1)
-				System.out.println("  Test Case " + CaseAndPaths[i][0] + ": Nick can take " + CaseAndPaths[i][1] + " perfect paths." );
-			else 
-				System.out.println("  Test Case " + CaseAndPaths[i][0] + ": Nick can take " + CaseAndPaths[i][1] + " perfect path." );
-		}
+		if( nPaths == 1 )
+			System.out.println("  Test Case " + nCase + ": Nick can take " + nPaths + " perfect path.");
+		else
+			System.out.println("  Test Case " + nCase + ": Nick can take " + nPaths + " perfect paths.");
 	}
 
-	public static void main(String[] args) 
+	public static void main(String[] args)  throws Exception
 	{
-		
+		//System.out.println(System.getProperty("user.dir"));
+		CityPaths p = new CityPaths("input.txt");
 		
 		
 	}
