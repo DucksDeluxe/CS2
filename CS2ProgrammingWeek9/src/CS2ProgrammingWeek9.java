@@ -48,13 +48,14 @@ public class CS2ProgrammingWeek9
 	 */
 	static boolean makeRowOfGoalBricks(int small, int big, int goal) 
 	{
+		if(big == 0)
+			return(small >= goal ? true : false);
+		
 		// enough big to put us within 5 inches of reaching goal
 		if ( big >= goal / 5 )
-		{
 			// we only need the remainder
 			return (goal % 5 <= small ? true : false);
-		}
-		
+			
 		// not enough big to put us within 5 inches of reaching goal
 		else
 			// we need enough small to cover remainder
@@ -323,7 +324,7 @@ public class CS2ProgrammingWeek9
 		// ac = bc
 		else if ( ac == bc )
 			// the other space needs to have a factor of 2
-			if( ac == ab*2 || ac == ab*2 )
+			if( ac == ab*2 || ab == ac*2 )
 				return true;
 			else
 				return false;
@@ -358,6 +359,9 @@ public class CS2ProgrammingWeek9
 	 */
 	static int makeKilosOfChocolate(int small, int big, int goal) 
 	{
+
+		if(big == 0)
+			return(small >= goal ? small : -1);
 		
 		// enough big to put us within 5 kilos of reaching goal
 		if ( big >= goal / 5 )
@@ -384,22 +388,34 @@ public class CS2ProgrammingWeek9
 		assert makeRowOfGoalBricks(3, 1, 8) == true;
 		assert makeRowOfGoalBricks(3, 1, 9) == false;
 		assert makeRowOfGoalBricks(3, 2, 10) == true;
-		
+		assert makeRowOfGoalBricks(8, 0, 8) == true;
+		assert makeRowOfGoalBricks(0, 2, 10) == true;
+		assert makeRowOfGoalBricks(0, 0, 0) == true;
+		assert makeRowOfGoalBricks(3, 2, 0) == true;
+		assert makeRowOfGoalBricks(0, 0, 10) == false;
+
 		assert sumExcludingDuplicates(1, 2, 3) == 6;
 		assert sumExcludingDuplicates(3, 2, 3) == 2;
 		assert sumExcludingDuplicates(3, 3, 3) == 0;
-
+		assert sumExcludingDuplicates(1, 1, 2) == 2;
+		assert sumExcludingDuplicates(1, 2, 2) == 1;
+		
 		assert sumExcludingUnluckyNums(1, 2, 3) == 6;
 		assert sumExcludingUnluckyNums(1, 2, 13) == 3;
 		assert sumExcludingUnluckyNums(1, 13, 3) == 1;
+		assert sumExcludingUnluckyNums(13, 2, 3) == 0;
 		
 		assert sumExcludingTeens(1, 2, 3) == 6;
 		assert sumExcludingTeens(2, 13, 1) == 3;
 		assert sumExcludingTeens(2, 1, 14) == 3;
+		assert sumExcludingTeens(15, 2, 3) == 20;
+		assert sumExcludingTeens(16, 2, 3) == 21;
+		assert sumExcludingTeens(1, 2, 3) == 6;
 		
 		assert roundedSum(16, 17, 18) == 60;
 		assert roundedSum(12, 13, 14) == 30;
 		assert roundedSum(6, 4, 4) == 10;
+		assert roundedSum(1, 2, 3) == 0;
 		
 		assert isCloseAndFar(1, 2, 10) == true;
 		assert isCloseAndFar(1, 2, 3) == false;
@@ -408,14 +424,22 @@ public class CS2ProgrammingWeek9
 		assert blackjack(19, 21) == 21;
 		assert blackjack(21, 19) == 21;
 		assert blackjack(19, 22) == 19;
+		assert blackjack(22, 19) == 19;
 		
 		assert spacedEvenly(2, 4, 6) == true;
 		assert spacedEvenly(4, 6, 2) == true;
 		assert spacedEvenly(4, 6, 3) == false;
+		assert spacedEvenly(2, 6, 4) == true;
+		assert spacedEvenly(4, 2, 6) == true;
+		assert spacedEvenly(6, 2, 4) == true;
+		assert spacedEvenly(4, 6, 2) == true;
+		assert spacedEvenly(6, 4, 2) == true;
 		
 		assert makeKilosOfChocolate(4, 1, 9) == 4;
 		assert makeKilosOfChocolate(4, 1, 10) == -1;
 		assert makeKilosOfChocolate(4, 1, 7) == 2;
-		
+		assert makeKilosOfChocolate(8, 0, 8) == 8;
+		assert makeKilosOfChocolate(0, 2, 10) == 0;
+
 	}
 }
