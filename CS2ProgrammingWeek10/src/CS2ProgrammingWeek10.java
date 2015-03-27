@@ -24,7 +24,7 @@ public class CS2ProgrammingWeek10
 	 */
 	static String GetNameAndPID()
 	{
-		return("Last,First,PID");
+		return("VanWinkle,Justin,J3338546");
 	}
 	
 	//	Problem #1
@@ -47,6 +47,21 @@ public class CS2ProgrammingWeek10
 	 */
 	static int maximumSpan(int[] nums) 
 	{
+		int nLargestSpan = 0;
+		
+		for(int i=0; i<nums.length; i++)
+		{
+			for(int j=0; j<nums.length; j++)
+			{
+				if(nums[i] == nums[j])
+				{
+					if(nLargestSpan < j-i+1)
+					{
+						nLargetstSpan = j-i+1;
+					}
+				}
+			}
+		}
 	}
 
 	//	Problem #2
@@ -69,6 +84,27 @@ public class CS2ProgrammingWeek10
 	 */
 	static boolean canStabilize(int[] nums) 
 	{
+		int nSumLeft = 0, nSumRight = 0;
+		
+		if(nums.length < 2)
+			return false;
+		
+		for(int i=0; i<nums.length; i++)
+		{
+			for(int left=0; left<i; left++)
+			{
+				nSumLeft += nums[left];
+			}
+			for(int right=i; right<nums.length; right++)
+			{
+				nSumRight += nums[right];
+			}
+			
+			if(nSumLeft == nSumRight)
+				return true;
+			else continue;
+		}
+		return false;
 	}	
 
 	//	Problem #3
@@ -90,6 +126,15 @@ public class CS2ProgrammingWeek10
 	 */
 	static int[] arithmeticSeries(int n) 
 	{
+		int[] array = new Integer[];
+		
+		for(int i=0; i<n; i++)
+		{
+			for(int j=0; j<i; j++)
+			{
+				array[j] = j+1;
+			}
+		}
 	}	
 
 	//	Problem #4
