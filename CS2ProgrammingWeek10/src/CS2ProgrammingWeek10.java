@@ -158,6 +158,27 @@ public class CS2ProgrammingWeek10
 	 */
 	static int[] follow3with4(int[] nums) 
 	{
+		int j = 0;
+		int[] returnArray = new Integer[nums.length];
+		
+		for(int i=0; i<nums.length; i++)
+		{
+			if(nums[i] != 4 && nums[i] != 3)
+			{
+				returnArray[j] = nums[i];
+				j++;
+			}
+			else if(nums[i] == 3)
+			{
+				returnArray[j] = nums[i];
+				returnArray[++j] = 4;
+			}
+			else if(nums[i] == 4)
+			{
+				continue;
+			}
+		}
+		return returnArray;
 	}
 	
 	//	Problem #5
@@ -182,6 +203,21 @@ public class CS2ProgrammingWeek10
 	 */
 	static boolean innerAppearsInOuter(int[] outer, int[] inner) 
 	{
+		int i = 0;
+		
+		for(int j=0; i<inner.length; i++)
+		{
+			if(outer[j] == inner[i])
+			{
+				i++;
+				if(i == inner.length)
+					return true;
+				else
+					continue;
+			}
+			
+		}
+		return false;
 	}
 	
 	//	Problem #6
@@ -204,6 +240,10 @@ public class CS2ProgrammingWeek10
 	 */
 	static int maximumMirrorSpan(int[] nums) 
 	{
+		for(int i=0; i<nums.length; i++)
+		{
+			
+		}
 	}
 	
 	//	Problem #7
