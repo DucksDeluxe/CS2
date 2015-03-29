@@ -342,6 +342,31 @@ public class CS2ProgrammingWeek10
 	 */
 	static int[] reverseArithSeries(int n) 
 	{
+		int[] series = new Integer[n*n];
+		
+		int sequence = 1;
+		int val = n;
+		
+		for(int i=0; i<series.length; i++)
+		{
+			if(val <= sequence)
+			{
+				series[i] = val;
+				val--;
+			}
+			else
+			{
+				series[i] = 0;
+				val--;
+			}
+			
+			if(val < 0)
+			{
+				val = n;
+				sequence++;
+			}
+		}
+		return series;
 	}
 	
 	//	Problem #9
@@ -362,6 +387,24 @@ public class CS2ProgrammingWeek10
 	 */
 	static int largestClump(int[] nums) 
 	{
+		int count = 0;
+		for(int i=1; i<nums.length; i++)
+		{
+			if(nums[i] == nums[i-1])
+			{
+				count++;
+				
+				while(i<nums.length)
+				{
+					if(nums[i] == nums[i-1])
+					{
+						i++;
+					}
+				}
+					
+			}
+		}
+		return count;
 	}
 	
 	///////////////////////////////////////////
