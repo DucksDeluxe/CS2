@@ -158,24 +158,29 @@ public class CS2ProgrammingWeek10
 	 */
 	static int[] follow3with4(int[] nums) 
 	{
-		int j = 0;
 		int[] returnArray = new Integer[nums.length];
 		
+		// copy array
 		for(int i=0; i<nums.length; i++)
 		{
-			if(nums[i] != 4 && nums[i] != 3)
+			returnArray[i] = nums[i];
+		}
+		
+		// swap 4s next to 3s
+		for(int i=0; i<nums.length; i++)
+		{
+			if(returnArray[i] == 3)
 			{
-				returnArray[j] = nums[i];
-				j++;
-			}
-			else if(nums[i] == 3)
-			{
-				returnArray[j] = nums[i];
-				returnArray[++j] = 4;
-			}
-			else if(nums[i] == 4)
-			{
-				continue;
+				// find next 4 and swap it with i+1
+				for(int j=i+1; j<nums.length; j++)
+				{
+					if(returnArray[j] == 4)
+					{
+						returnArray[j] = returnArray[i+1];
+						returnArray[i+1] = 4;
+						break;
+					}
+				}
 			}
 		}
 		return returnArray;
@@ -240,10 +245,29 @@ public class CS2ProgrammingWeek10
 	 */
 	static int maximumMirrorSpan(int[] nums) 
 	{
+		int curSpan = 0;
+		int maxSpan = 0;
+		
 		for(int i=0; i<nums.length; i++)
 		{
-			
+			for(int j=nums.length-1; j>=0; j++)
+			{
+				if(nums[i] == nums[j])
+				{
+					curSpan++;
+					i++;
+					if(i > nums.length\2)
+						break;
+				}
+				else
+					if(curSpan > maxSpan)
+					{
+						maxSpan = curSpan;
+					}
+				curSpan = 0;
+			}
 		}
+		return maxSpan;
 	}
 	
 	//	Problem #7
@@ -267,6 +291,37 @@ public class CS2ProgrammingWeek10
 	 */
 	static int[] follow4with5(int[] nums) 
 	{
+		int j=0;
+		int[] returnArray = new Integer[nums.length];
+		
+		// copy array
+		for(int i=0; i<nums.length; i++)
+		{
+			returnArray[i] = nums[i];
+		}
+		
+		for(int i=0; i<nums.length; i++)
+		{
+			if(returnArray[i] == 4 && returnArray[i+1] != 5)
+			{
+				for(int j; j<nums.length; j++)
+				{
+					if(returnArray[j] == 5)
+						if(j > 0)
+							if(returnArray[j-1] == 4)
+							{
+								continue;
+							}
+							else
+							{
+								returnArray[j] = returnArray[i+1];
+								returnArray[i+1] = 5;
+								break;
+							}
+				}
+			}
+		}
+		return returnArray;
 	}
 	
 	//	Problem #8
