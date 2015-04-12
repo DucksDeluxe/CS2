@@ -70,7 +70,7 @@ public class CaesarCipher
 	}
 	
 	// count number of lowers
-	int lowers(String str)
+	static int lowers(String str)
 	{
 		int count = 0;
 		for(char c : str.toCharArray())
@@ -82,7 +82,7 @@ public class CaesarCipher
 	}
 	
 	// count number of specified char
-	int count(char c, String str)
+	static int count(char c, String str)
 	{
 		int count = 0;
 		for(char i : str.toCharArray())
@@ -94,13 +94,13 @@ public class CaesarCipher
 	}
 	
 	// get percentage of one num with respect to another
-	double percent(int num1, int num2)
+	static double percent(int num1, int num2)
 	{
 		return 100*(double)num1/num2;
 	}
 	
 	
-	double[] freqs(String str)
+	static double[] freqs(String str)
 	{
 		double[] list = new double[26];
 		
@@ -113,7 +113,7 @@ public class CaesarCipher
 		return list;
 	}
 	
-	double[] rotate(int n, double[] list)
+	static double[] rotate(int n, double[] list)
 	{
 		double[] newList = new double[list.length];
 		int j = 0;
@@ -131,16 +131,55 @@ public class CaesarCipher
 		return newList;
 	}
 	
-	double chisqr(double[] os)
+	static double chisqr(double[] os)
 	{
+		double sum = 0;
 		
+		for(int i=0; i<os.length; i++)
+		{
+			sum += Math.pow(os[i] - table[i], 2) / table[i];
+		}
+		return sum;
 	}
 	
+	int position(double a, double[] list)
+	{
+		for(int i=0; i<list.length; i++)
+		{
+			if(list[i] == a)
+				return i;
+		}
+		return -1;		
+	}
+	
+	static String crack(String str)
+	{
+		double[] codeFreqs = freqs(str);
+		double[] dChiSqr = new double[26];
+		double[] rotFreqs = new double[26];
+		int min = 0;
+		
+		for(int i=0; i<dChiSqr.length; i++)
+		{
+			rotFreqs = rotate(i, freqs(str));
+			dChiSqr[i] = chisqr(rotFreqs);
+		}
+		
+		for(int i=0; i<dChiSqr.length; i++)
+		{
+			if(dChiSqr[i] < dChiSqr[min])
+			{
+				min = i;
+			}
+		}
+		return decode(min, str);
+	}
 	
 	public static void main(String[] args) 
 	{
-		System.out.println(encode(3, "a"));
-		System.out.println(decode(3, encode(3, "r")));
+		//System.out.println(encode(3, "a"));
+		//System.out.println(decode(3, encode(3, "r")));
+		System.out.println(crack("myxqbkdevkdsyxc yx mywzvodsxq dro ohkw!"));
 
 	}
 
