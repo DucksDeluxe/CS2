@@ -1,3 +1,5 @@
+// Justin VanWinkle
+
 import java.util.HashMap;
 
 public class MiniMax 
@@ -8,8 +10,8 @@ public class MiniMax
 	static int m_Twos;
 	static int m_Threes;
 	static int m_Fours;
-	final int NEG_INF = Integer.MIN_VALUE;
-	final int POS_INF = Integer.MAX_VALUE;
+	final int NEG_INF = Integer.MIN_VALUE+1;
+	final int POS_INF = Integer.MAX_VALUE-1;
 	
 	//  This is the piece to search for. Should be either RED or YELLOW.
 	int m_nSearchPiece = 0;
@@ -50,7 +52,7 @@ public class MiniMax
 		return( nNumMoves );
 	}
 
-	int DoSearch( Position pos, int nPiece, int nDepth,  Board pBoard )
+	int DoSearch( Position pos, int nPiece, int nDepth, int alpha, int beta, Board pBoard )
 	{
 		if(memoboard.containsKey(pBoard) && nDepth != 0)
 			return memoboard.get(pBoard);
@@ -58,9 +60,10 @@ public class MiniMax
 		// Local arrays for the legal move list and
 		//   the result list.
 		int[] nMoveList = new int[7*2];
-		int[] nResultList = new int[7];
+		//int[] nResultList = new int[7];
 		// Create min and max variables.
-		int nMin = 2000000, nMax = -2000000;
+		//int nMin = 2000000, nMax = -2000000;
+		int v = 0;
 
 		// First, see if a side has won.
 		if( pBoard.DidSideWin( nPiece ) )
@@ -96,6 +99,55 @@ public class MiniMax
 			pos.Col = nMoveList[1]; 
 		}
 		
+		if(isMaximizingPlayer(nPiece))
+		{
+			v = NEG_INF;
+			for(int i=0; i<nMoves; i++)
+			{
+				Board SaveMe = pBoard.Clone();
+				pBoard.PlacePiece(nMoveList[i*2], nMoveList[i*2+1], nPiece);
+				v = Integer.max(v, DoSearch(pos, nPiece^1, nDepth+1, alpha, beta, pBoard));
+				//alpha = Integer.max(alpha, v);
+				if( alpha < v)
+				{
+					alpha = v;
+				
+					if(nDepth == 0)
+					{
+						pos.Row = nMoveList[i*2];
+						pos.Col = nMoveList[i*2+1];
+					}
+				}
+				
+				pBoard = SaveMe.Clone();
+							
+				if(beta <= alpha)
+					break;
+			}
+		}
+		
+		else
+		{
+			v = POS_INF;
+			for(int i=0; i<nMoves; i++)
+			{
+				Board SaveMe = pBoard.Clone();
+				pBoard.PlacePiece(nMoveList[i*2], nMoveList[i*2+1], nPiece);
+				v = Integer.min(v, DoSearch(pos, nPiece^1, nDepth+1, alpha, beta, pBoard));
+				beta = Integer.min(beta, v);
+				pBoard = SaveMe.Clone();
+				if(beta <= alpha)
+					break;
+			}
+		}
+
+		memoboard.put(pBoard, v);
+		
+		return v;
+		
+		
+		////////////////////////////////////////////////////////////////////////////
+		/*
 		// Loop through the legal moves.
 		for( int i=0; i<nMoves; i++ )
 		{
@@ -148,7 +200,7 @@ public class MiniMax
 			memoboard.put(pBoard, nMin);
 			return( nMin );
 		}
-		
+		*/
 	}
 
 	// Wrapper method that kicks off minimax to get a move.
@@ -163,7 +215,7 @@ public class MiniMax
 		brd.SetBoardData( BoardData );
 		
 		// Call the recursive method.
-		DoSearch( pos, nPiece, 0, brd );
+		DoSearch( pos, nPiece, 0, NEG_INF, POS_INF, brd );
 	}
 	
 	int ScoreIt( int nPiece, int[][] BoardData )
@@ -330,5 +382,9 @@ public class MiniMax
 		return( strRet + " }");
 	}
 	
+	boolean isMaximizingPlayer(int nPiece)
+	{
+		return nPiece == m_nSearchPiece;
+	}
 }
 
